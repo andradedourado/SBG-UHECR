@@ -22,9 +22,9 @@ def photon_density(E, T): # Number of photons per unit volume
 def select_energy_range(photon_spectrum, nbins):
 
     if photon_spectrum == 'IR':
-        return np.logspace(-4, -1, num = nbins) * eV_to_erg # erg
+        return np.logspace(-5, -1, num = nbins) * eV_to_erg # erg
     elif photon_spectrum == 'OPT':
-        return np.logspace(-2, 1, num = nbins) * eV_to_erg # erg
+        return np.logspace(-3, 1, num = nbins) * eV_to_erg # erg
     else: 
         raise ValueError(f"Unknown photon spectrum: {photon_spectrum}. Valid options are 'IR' and 'OPT'.")
 
@@ -52,9 +52,9 @@ def select_energy_density(photon_spectrum):
 def normalize_photon_spectrum(photon_spectrum):
     
     if photon_spectrum == 'IR':
-        integral = quad(photon_density, 10**-4 * eV_to_erg, 10**-1 * eV_to_erg, args = (select_blackbody_temperature(photon_spectrum)))[0]
+        integral = quad(photon_density, 10**-5 * eV_to_erg, 10**-1 * eV_to_erg, args = (select_blackbody_temperature(photon_spectrum)))[0]
     if photon_spectrum == 'OPT':
-        integral = quad(photon_density, 10**-2 * eV_to_erg, 10**1 * eV_to_erg, args = (select_blackbody_temperature(photon_spectrum)))[0]
+        integral = quad(photon_density, 10**-3 * eV_to_erg, 10**1 * eV_to_erg, args = (select_blackbody_temperature(photon_spectrum)))[0]
 
     return select_energy_density(photon_spectrum) / integral
 
