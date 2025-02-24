@@ -78,7 +78,10 @@ def write_photon_spectrum(photon_spectrum, nbins = 100):
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     
-    write_photon_spectrum('IR')
-    write_photon_spectrum('OPT')
+    # write_photon_spectrum('IR')
+    # write_photon_spectrum('OPT')
+
+    print(normalize_photon_spectrum('IR'))
+    print(normalize_photon_spectrum('OPT'))
 
 # ----------------------------------------------------------------------------------------------------
