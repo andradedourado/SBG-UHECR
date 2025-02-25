@@ -24,7 +24,7 @@ def iZ(Z):
         raise ValueError(f"Z ({Z}) not found in ZS.")
     
 # ----------------------------------------------------------------------------------------------------
-def plot_timescales():
+def plot_photodisintegration_timescales():
 
     for Z in ZS:
         data = np.loadtxt(f"{RESULTS_DIR}/timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat")
@@ -39,8 +39,23 @@ def plot_timescales():
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_photopion_timescales():
+
+    data = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_1H.dat")
+    plt.plot(np.log10(data[:,0]), data[:,1], label = r'$^1$H')
+
+    plt.yscale('log')
+    plt.xlabel(r'$\log_{10}{({\rm Energy}/{\rm eV})}$')
+    plt.ylabel(r'Timescales$\: \rm [yr]$')
+    plt.legend(title = 'Nucleus')
+    plt.savefig(f"{FIGURES_DIR}/photopion_timescales.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/photopion_timescales.png", bbox_inches = 'tight', dpi = 300)
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_timescales()
+    # plot_photodisintegration_timescales()
+    plot_photopion_timescales()
 
 # ----------------------------------------------------------------------------------------------------

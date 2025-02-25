@@ -87,7 +87,7 @@ def compute_timescales(interaction, E, Z, A):
 def write_timescales(interaction, Z, A, nbins = 100):
 
     E_values = np.logspace(-1, 3, num = nbins)
-    timescales = compute_timescales(interaction, E, Z, A)
+    timescales = compute_timescales(interaction, E_values, Z, A)
 
     if interaction == 'advection':
         with open(f"{RESULTS_DIR}/timescales_{interaction}.dat", 'w') as f:
