@@ -4,7 +4,7 @@ import numpy as np
 import subprocess
 
 RESULTS_DIR = "../results"
-XSECTIONS_DIR = "../../cross-sections"
+XSECTIONS_DIR = "../../cross-sections/scripts"
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
 ZS = [1, 2, 7, 14, 26]
 
@@ -76,7 +76,7 @@ def get_eps_and_cross_sections(A, Z, interaction):
                 cross_section.append(float(values[1]))
 
         s = np.array(s) * GeV_to_eV**2
-        cross_section = np.array(cross_section) * mbarn_to_m2
+        cross_section = A * np.array(cross_section) * mbarn_to_m2
         eps = (s - mp**2) / (2*mp)
 
         return eps, cross_section
@@ -110,6 +110,10 @@ def write_timescales(A, Z, interaction):
 if __name__ == '__main__':
 
     write_timescales(1, 1, 'photopion')
+    write_timescales(14, 7, 'photopion')
+    write_timescales(28, 14, 'photopion')
+    write_timescales(56, 26, 'photopion')
+
     # write_timescales(14, 7, 'photodisintegration')
     # write_timescales(28, 14, 'photodisintegration')
     # write_timescales(56, 26, 'photodisintegration')
