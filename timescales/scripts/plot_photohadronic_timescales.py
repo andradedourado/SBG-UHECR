@@ -40,30 +40,36 @@ def get_color(Z):
 def plot_timescales():
 
     data_photopion_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_1H.dat")
+    data_pp_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_pairproduction_1H.dat")    
     plt.plot(np.log10(data_photopion_1H[:,0]), data_photopion_1H[:,1], ls = '-.', color = 'b')
+    plt.plot(np.log10(data_pp_1H[:,0]), data_pp_1H[:,1], ls = ':', color = 'b')
+    plt.plot(np.log10(data_photopion_1H[:,0]), (1 / data_photopion_1H[:,1] + 1 / data_pp_1H[:,1])**-1, ls = '-', color = 'b')
 
     for Z in ZS:
 
         data_pd = np.loadtxt(f"{RESULTS_DIR}/timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat")
         data_photopion = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_{PARTICLES[iZ(Z)]}.dat")
+        data_pp = np.loadtxt(f"{RESULTS_DIR}/timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat")
 
         color = get_color(Z)
 
         plt.plot(np.log10(data_pd[:,0]), data_pd[:,1], ls = '--', color = color)
         plt.plot(np.log10(data_photopion[:,0]), data_photopion[:,1], ls = '-.', color = color)
-        plt.plot(np.log10(data_pd[:,0]), (1 / data_pd[:,1] + 1 / data_photopion[:,1])**-1, ls = '-', color = color)
+        plt.plot(np.log10(data_pp[:,0]), data_pp[:,1], ls = ':', color = color)
+        plt.plot(np.log10(data_pd[:,0]), (1 / data_pd[:,1] + 1 / data_photopion[:,1] + 1 / data_pp[:,1])**-1, ls = '-', color = color)
 
-    H = lines.Line2D([], [], color = 'blue', label = r'$^{1}$H')
-    N = lines.Line2D([], [], color = 'green', label = r'$^{14}$N')
-    Si = lines.Line2D([], [], color = 'red', label = r'$^{28}$Si')
-    Fe = lines.Line2D([], [], color = 'orange', label = r'$^{56}$Fe')
-    lgnd = plt.legend(title = 'Nucleus', handles = [H, N, Si, Fe], frameon = True, loc = 'upper right')
+    H_label = lines.Line2D([], [], color = 'blue', label = r'$^{1}$H')
+    N_label = lines.Line2D([], [], color = 'green', label = r'$^{14}$N')
+    Si_label = lines.Line2D([], [], color = 'red', label = r'$^{28}$Si')
+    Fe_label = lines.Line2D([], [], color = 'orange', label = r'$^{56}$Fe')
+    lgnd = plt.legend(title = 'Nucleus', handles = [H_label, N_label, Si_label, Fe_label], frameon = True, loc = 'upper right')
     plt.gca().add_artist(lgnd)
 
-    PD = lines.Line2D([], [], color = 'black', ls = '--', label = r'$\rm PD$')
-    PPION = lines.Line2D([], [], color = 'black', ls = '-.', label = r'$\rm P\pi$')
-    PD_PPION = lines.Line2D([], [], color = 'black', ls = '-', label = r'$\rm PD + P\pi$')
-    lgnd = plt.legend(title = 'Interaction', handles = [PD, PPION, PD_PPION], frameon = True, loc = 'upper right', bbox_to_anchor = (0.792, 1.))
+    photodisintegration_label = lines.Line2D([], [], color = 'black', ls = '--', label = r'$\rm PD$')
+    photopion_label = lines.Line2D([], [], color = 'black', ls = '-.', label = r'$\rm P\pi$')
+    pairproduction_label = lines.Line2D([], [], color = 'black', ls = ':', label = r'$\rm PP$')
+    total_label = lines.Line2D([], [], color = 'black', ls = '-', label = 'Total')
+    lgnd = plt.legend(title = 'Interaction', handles = [photodisintegration_label, photopion_label, pairproduction_label, total_label], frameon = True, loc = 'lower left')
     plt.gca().add_artist(lgnd)
 
     plt.yscale('log')
