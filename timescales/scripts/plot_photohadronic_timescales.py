@@ -1,3 +1,4 @@
+from matplotlib.offsetbox import AnchoredText
 from matplotlib import lines
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,12 +10,13 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
+DATA_DIR = "../data"
 FIGURES_DIR = "../figures"
 RESULTS_DIR = "../results"
 
-PARTICLES_LEGEND = [r'$^{14}\mathrm{N}$', r'$^{28}\mathrm{Si}$', r'$^{56}\mathrm{Fe}$']
-PARTICLES = ['14N', '28Si', '56Fe']
-ZS = [7, 14, 26]
+PARTICLES_LEGEND = [r'$^{1}$H', r'$^{4}$He', r'$^{14}$N', r'$^{28}$Si', r'$^{56}$Fe']
+PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
+ZS = [1, 2, 7, 14, 26]
 
 # ----------------------------------------------------------------------------------------------------
 def iZ(Z):
@@ -27,6 +29,8 @@ def iZ(Z):
 # ----------------------------------------------------------------------------------------------------
 def get_color(Z):
 
+    if Z == 1:
+        return 'b'
     if Z == 7:
         return 'g'
     elif Z == 14:
@@ -35,6 +39,34 @@ def get_color(Z):
         return 'orange'
     else: 
         raise ValueError(f"Unknown Z value: {Z}") 
+
+# ----------------------------------------------------------------------------------------------------
+def plot_timescales_comparison(Z):
+
+    data_Condorelli = np.loadtxt(f"{DATA_DIR}/timescales_Condorelli_{PARTICLES[iZ(Z)]}.dat")
+
+    data_photopion = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_{PARTICLES[iZ(Z)]}.dat")
+    data_pp = np.loadtxt(f"{RESULTS_DIR}/timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat")
+
+    if Z == 1 or Z == 2:
+        data_LAD = (1 / data_photopion[:,1] + 1 / data_pp[:,1])**-1
+    
+    else:
+        data_pd = np.loadtxt(f"{RESULTS_DIR}/timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat")
+        data_LAD = (1 / data_pd[:,1] + 1 / data_photopion[:,1] + 1 / data_pp[:,1])**-1
+
+    at = AnchoredText(f'{PARTICLES_LEGEND[iZ(Z)]}', loc = 'lower left', frameon = False, prop = {'fontsize': 'x-large'})
+    plt.gca().add_artist(at)
+
+    plt.plot(data_Condorelli[:,0], data_Condorelli[:,1], color = 'k', ls = '--', label = 'Condorelli et al. (2023)')
+    plt.plot(np.log10(data_photopion[:,0]), data_LAD, color = get_color(Z), label = 'LAD')
+    plt.yscale('log')
+    plt.xlabel(r'$\log_{10}{({\rm Energy}/{\rm eV})}$')
+    plt.ylabel(r'Timescales$\: \rm [yr]$')
+    plt.legend()
+    plt.savefig(f"{FIGURES_DIR}/photohadronic_timescales_comparison_{PARTICLES[iZ(Z)]}.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/photohadronic_timescales_comparison_{PARTICLES[iZ(Z)]}.png", bbox_inches = 'tight', dpi = 300)
+    plt.show() 
 
 # ----------------------------------------------------------------------------------------------------
 def plot_timescales():
@@ -83,6 +115,11 @@ def plot_timescales():
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_timescales()
+    plot_timescales_comparison(1)
+    # plot_timescales_comparison(7)
+    # plot_timescales_comparison(14)
+    # plot_timescales_comparison(26)
+
+    # plot_timescales()
 
 # ----------------------------------------------------------------------------------------------------
