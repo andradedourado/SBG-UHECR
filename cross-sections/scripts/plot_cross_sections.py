@@ -2,7 +2,6 @@ from matplotlib.offsetbox import AnchoredText
 import matplotlib.pyplot as plt
 import ast
 import numpy as np
-import pandas as pd
 import subprocess
 
 plt.rcParams.update({'legend.fontsize': 'large',
@@ -77,8 +76,8 @@ def plot_xsections(A, Z):
     eps_pd, cross_section_pd = execute_get_cross_section_TENDL2023(A, Z)
     eps_photopion, cross_section_photopion = get_photopion_xsections()
 
-    plt.plot(eps_pd, cross_section_pd, color = 'red', linestyle = '-', label = 'Photodisintegration')
-    plt.plot(eps_photopion * GeV_to_MeV, cross_section_photopion * A, color = 'blue', linestyle = '-', label = 'Photopion production')
+    plt.plot(eps_pd, cross_section_pd, color = 'red', linestyle = '-', label = r'$\rm PD$')
+    plt.plot(eps_photopion * GeV_to_MeV, cross_section_photopion * A, color = 'blue', linestyle = '-', label = r'$\rm P \pi$')
 
     at = AnchoredText(f'{PARTICLES_LEGEND[iZ(Z)]}', loc = 'upper left', frameon = False, prop = {'fontsize': 'x-large'})
     plt.gca().add_artist(at)
