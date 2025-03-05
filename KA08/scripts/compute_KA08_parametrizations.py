@@ -32,7 +32,7 @@ def phi_gmm(x):
     mask_x_lt_xminus = x < x_minus
     mask_x_ge_xplus = x >= x_plus
 
-    y[mask_x_between_xlimits] = x - x_minus[mask_x_between_xlimits] / (x_plus[mask_x_between_xlimits] - x_minus[mask_x_between_xlimits])
+    y[mask_x_between_xlimits] = (x - x_minus[mask_x_between_xlimits]) / (x_plus[mask_x_between_xlimits] - x_minus[mask_x_between_xlimits])
     phi[mask_x_between_xlimits] = B_gmm[mask_x_between_xlimits] * np.exp(-s_gmm[mask_x_between_xlimits] * (np.log(x / x_minus[mask_x_between_xlimits]))**dlt_gmm[mask_x_between_xlimits]) * (np.log(2 / (1 + y[mask_x_between_xlimits]**2)))**(2.5 + 0.4 * np.log(eta_over_eta0[mask_x_between_xlimits]))
     phi[mask_x_lt_xminus] = B_gmm[mask_x_lt_xminus] * np.log(2)**(2.5 + 0.4 * np.log(eta_over_eta0[mask_x_lt_xminus]))
     phi[mask_x_ge_xplus] = 0
@@ -69,9 +69,9 @@ def phi_l(x, l):
     elif l == 'nu_e':
 
         eta_over_eta0 = KA08_TableII[:,0]
-        s_l = KA08_TableII[:,1]
-        dlt_l = KA08_TableII[:,2]
-        B_l = KA08_TableII[:,3] * 10**KA08_TableII[:,4] # cm^3 / s
+        s_l = KA08_TableII[:,13]
+        dlt_l = KA08_TableII[:,14]
+        B_l = KA08_TableII[:,15] * 10**KA08_TableII[:,16] # cm^3 / s
 
     elif l == 'e':
 
@@ -129,7 +129,7 @@ def phi_l(x, l):
     mask_x_lt_xprime_minus = x < x_prime_minus
     mask_x_ge_xprime_plus = x >= x_prime_plus
 
-    y_prime[mask_x_between_xprime] = x - x_prime_minus[mask_x_between_xprime] / (x_prime_plus[mask_x_between_xprime] - x_prime_minus[mask_x_between_xprime])
+    y_prime[mask_x_between_xprime] = (x - x_prime_minus[mask_x_between_xprime]) / (x_prime_plus[mask_x_between_xprime] - x_prime_minus[mask_x_between_xprime])
     phi[mask_x_between_xprime] = B_l[mask_x_between_xprime] * np.exp(-s_l[mask_x_between_xprime] * (np.log(x / x_prime_minus[mask_x_between_xprime]))**dlt_l[mask_x_between_xprime]) * (np.log(2 / (1 + y_prime[mask_x_between_xprime]**2)))**psi[mask_x_between_xprime]
     phi[mask_x_lt_xprime_minus] = B_l[mask_x_lt_xprime_minus] * (np.log(2))**psi[mask_x_lt_xprime_minus]
     phi[mask_x_ge_xprime_plus] = 0 
