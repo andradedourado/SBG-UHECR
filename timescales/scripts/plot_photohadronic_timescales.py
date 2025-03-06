@@ -10,7 +10,7 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
-DATA_DIR = "../data"
+REFERENCES_DIR = "../references"
 FIGURES_DIR = "../figures"
 RESULTS_DIR = "../results"
 
@@ -43,7 +43,7 @@ def get_color(Z):
 # ----------------------------------------------------------------------------------------------------
 def plot_timescales_comparison(Z):
 
-    data_Condorelli = np.loadtxt(f"{DATA_DIR}/timescales_Condorelli_{PARTICLES[iZ(Z)]}.dat")
+    data_Condorelli = np.loadtxt(f"{REFERENCES_DIR}/timescales_Condorelli_{PARTICLES[iZ(Z)]}.dat")
 
     data_photopion = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_{PARTICLES[iZ(Z)]}.dat")
     data_pp = np.loadtxt(f"{RESULTS_DIR}/timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat")
