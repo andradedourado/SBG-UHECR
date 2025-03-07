@@ -37,7 +37,7 @@ def get_figure_and_set_labels(l):
         return 'Figure5'
 
 # ----------------------------------------------------------------------------------------------------
-def set_limit_and_get_position_index(l, eta_over_eta0):
+def set_limit_and_get_position_and_index(l, eta_over_eta0):
 
     if eta_over_eta0 == 1.5:
         plt.ylim([1.e-21, 1.e-18])
@@ -53,19 +53,19 @@ def set_limit_and_get_position_index(l, eta_over_eta0):
 # ----------------------------------------------------------------------------------------------------
 def plot_KA08_parametrizations(l, eta_over_eta0):
 
-    data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_labels(l)}_{set_limit_and_get_position_index(l, eta_over_eta0)[0]}.dat")
+    data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_labels(l)}_{set_limit_and_get_position_and_index(l, eta_over_eta0)[0]}.dat")
     data_LAD = np.loadtxt(f"{RESULTS_DIR}/phi_{l}.dat")
 
     at = AnchoredText(r'$\eta = {0} \eta_0$'.format(eta_over_eta0), loc = 'upper left', frameon = False, prop = {'fontsize': 'x-large'})
     plt.gca().add_artist(at)
 
     plt.plot(data_KA08[:,0], data_KA08[:,1], color = 'k', ls = '--', label = 'KA08')
-    plt.plot(data_LAD[:,0], data_LAD[:,0] * data_LAD[:,set_limit_and_get_position_index(l, eta_over_eta0)[1]], color = 'r', ls = '-', label = 'LAD')
+    plt.plot(data_LAD[:,0], data_LAD[:,0] * data_LAD[:,set_limit_and_get_position_and_index(l, eta_over_eta0)[1]], color = 'r', ls = '-', label = 'LAD')
     plt.xscale('log')
     plt.yscale('log')
     plt.legend()
-    plt.savefig(f"{FIGURES_DIR}/phi_{l}_comparison_{set_limit_and_get_position_index(l, eta_over_eta0)[1]:02d}.pdf", bbox_inches = 'tight')
-    plt.savefig(f"{FIGURES_DIR}/phi_{l}_comparison_{set_limit_and_get_position_index(l, eta_over_eta0)[1]:02d}.png", bbox_inches = 'tight', dpi = 300)
+    plt.savefig(f"{FIGURES_DIR}/phi_{l}_comparison_{set_limit_and_get_position_and_index(l, eta_over_eta0)[1]:02d}.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/phi_{l}_comparison_{set_limit_and_get_position_and_index(l, eta_over_eta0)[1]:02d}.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------

@@ -137,7 +137,7 @@ def phi_l(x, l):
     return phi
 
 # ----------------------------------------------------------------------------------------------------
-def write_energy_spectra(l):
+def write_phi(l):
 
     phi = []
     xs = np.logspace(-4, 1, num = 100)
@@ -160,6 +160,6 @@ def compute_energy_losses():
 if __name__ == '__main__':
 
     for l in ls:
-        write_energy_spectra(l)
+        write_phi(l)
 
 # ----------------------------------------------------------------------------------------------------
