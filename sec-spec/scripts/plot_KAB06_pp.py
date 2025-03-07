@@ -78,14 +78,14 @@ def plot_KAB06_pp(l, Ep):
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_KAB06_pp('gmm', 1)
-    plot_KAB06_pp('gmm', 30)
-    plot_KAB06_pp('gmm', 300)
-    plot_KAB06_pp('gmm', 3000)
+    # plot_KAB06_pp('gmm', 1)
+    # plot_KAB06_pp('gmm', 30)
+    # plot_KAB06_pp('gmm', 300)
+    # plot_KAB06_pp('gmm', 3000)
 
-    plot_KAB06_pp('e', 0.1)
-    plot_KAB06_pp('e', 100)
-    plot_KAB06_pp('e', 1000)
+    # plot_KAB06_pp('e', 0.1)
+    # plot_KAB06_pp('e', 100)
+    # plot_KAB06_pp('e', 1000)
 
     plot_KAB06_pp('nu_mu', 0.1)
     plot_KAB06_pp('nu_mu', 100)
