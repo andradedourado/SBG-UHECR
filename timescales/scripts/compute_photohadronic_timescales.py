@@ -53,6 +53,16 @@ def I(eps, Gmm):
     return -kB / (np.pi**2 * (hbar * c)**3) * (T_IR * NORM_IR * np.log(1. - np.exp(-(eps)/(2 * Gmm * kB * T_IR))) + T_OPT * NORM_OPT * np.log(1. - np.exp(-(eps)/(2 * Gmm * kB * T_OPT))))
 
 # ----------------------------------------------------------------------------------------------------
+def inelasticity(x): 
+
+    Y_inf = 0.47
+    xb = 6e9 # eV
+    dlt = 0.33
+    s = 0.15
+
+    return Y_inf * (x / xb)**dlt / (1 + (x / xb)**(dlt / s))**s
+
+# ----------------------------------------------------------------------------------------------------
 def get_eps_and_cross_sections(A, Z, interaction):
 
     if interaction == 'photodisintegration':
@@ -92,7 +102,7 @@ def compute_timescales(A, Z, Gmms, interaction):
     eps, cross_section = get_eps_and_cross_sections(A, Z, interaction)
 
     for Gmm in Gmms:
-        integrand_interaction_rate = c / (2 * Gmm**2) * eps * cross_section * I(eps, Gmm)
+        integrand_interaction_rate = c / (2 * Gmm**2) * eps * cross_section * inelasticity(eps) * I(eps, Gmm)
         interaction_rate = simps(integrand_interaction_rate, eps)
         timescales.append(interaction_rate**-1 * s_to_yr)
 

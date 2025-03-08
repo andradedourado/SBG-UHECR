@@ -77,7 +77,7 @@ def plot_timescales():
     plt.plot(np.log10(data_pp_1H[:,0]), data_pp_1H[:,1], ls = ':', color = 'b')
     plt.plot(np.log10(data_photopion_1H[:,0]), (1 / data_photopion_1H[:,1] + 1 / data_pp_1H[:,1])**-1, ls = '-', color = 'b')
 
-    for Z in ZS:
+    for Z in [7, 14, 26]:
 
         data_pd = np.loadtxt(f"{RESULTS_DIR}/timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat")
         data_photopion = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_{PARTICLES[iZ(Z)]}.dat")
@@ -115,11 +115,11 @@ def plot_timescales():
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_timescales_comparison(1)
+    # plot_timescales_comparison(1)
     # plot_timescales_comparison(7)
     # plot_timescales_comparison(14)
     # plot_timescales_comparison(26)
 
-    # plot_timescales()
+    plot_timescales()
 
 # ----------------------------------------------------------------------------------------------------
