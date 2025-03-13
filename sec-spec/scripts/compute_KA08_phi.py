@@ -120,7 +120,7 @@ def phi_l(x, l):
         x_prime_minus = x_min / 2
         x_prime_plus = x_max
         
-        psi = 6 + (1 - np.exp(1.5 * (4 - eta_over_eta0))) * heaviside(eta_over_eta0, 4)
+        psi = 6 * (1 - np.exp(1.5 * (4 - eta_over_eta0))) * heaviside(eta_over_eta0, 4)
 
     phi = np.zeros_like(eta_over_eta0)
     y_prime = np.zeros_like(eta_over_eta0)
@@ -149,12 +149,7 @@ def write_phi(l):
             phi.append(phi_l(x, l))
     
     phi = np.array(phi)
-    np.savetxt(f"{RESULTS_DIR}/phi_{l}.dat", np.column_stack((xs, phi)), fmt = "%.15e")
-
-# ----------------------------------------------------------------------------------------------------
-def compute_energy_losses():
-
-    return 
+    np.savetxt(f"{RESULTS_DIR}/KA08_phi_{l}.dat", np.column_stack((xs, phi)), fmt = "%.15e")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':

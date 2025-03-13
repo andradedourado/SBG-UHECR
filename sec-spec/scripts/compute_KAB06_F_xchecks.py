@@ -60,7 +60,7 @@ def write_F(l):
         F_300TeV = F_l(xs, 300, l) 
         F_3000TeV = F_l(xs, 3000, l)
 
-        np.savetxt(f"{RESULTS_DIR}/KAB06_F_{l}.dat", np.column_stack((xs, F_1TeV, F_30TeV, F_300TeV, F_3000TeV)), fmt = "%.15e")
+        np.savetxt(f"{RESULTS_DIR}/KAB06_xchecks_F_{l}.dat", np.column_stack((xs, F_1TeV, F_30TeV, F_300TeV, F_3000TeV)), fmt = "%.15e")
 
     elif l == 'e': 
 
@@ -68,7 +68,7 @@ def write_F(l):
         F_100TeV = F_l(xs, 100, l) 
         F_1000TeV = F_l(xs, 1000, l)
 
-        np.savetxt(f"{RESULTS_DIR}/KAB06_F_{l}.dat", np.column_stack((xs, F_0_1TeV, F_100TeV, F_1000TeV)), fmt = "%.15e")
+        np.savetxt(f"{RESULTS_DIR}/KAB06_xchecks_F_{l}.dat", np.column_stack((xs, F_0_1TeV, F_100TeV, F_1000TeV)), fmt = "%.15e")
 
     elif l == 'nu_mu':
             
@@ -78,13 +78,13 @@ def write_F(l):
         F_100TeV = F_l(xs, 100, l) 
         F_1000TeV = F_l(xs, 1000, l)
 
-        np.savetxt(f"{RESULTS_DIR}/KAB06_F_{l}.dat", np.column_stack((xs, F_0_1TeV, F_100TeV, F_1000TeV)), fmt = "%.15e")
+        np.savetxt(f"{RESULTS_DIR}/KAB06_xchecks_F_{l}.dat", np.column_stack((xs, F_0_1TeV, F_100TeV, F_1000TeV)), fmt = "%.15e")
      
 # ----------------------------------------------------------------------------------------------------
 if __name__ in '__main__':
 
-    # write_F('gmm')
-    # write_F('e')
+    write_F('gmm')
+    write_F('e')
     write_F('nu_mu')
 
 # ----------------------------------------------------------------------------------------------------

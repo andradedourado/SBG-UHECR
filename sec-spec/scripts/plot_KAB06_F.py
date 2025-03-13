@@ -59,7 +59,7 @@ def get_energy_string_and_column_index(Ep):
 def plot_KAB06_pp(l, Ep):
 
     data_KAB06 = np.loadtxt(f"{REFERENCES_DIR}/KAB06_{get_reference_figure_and_set_labels(l)}_{get_energy_string_and_column_index(Ep)[0]}.dat")
-    data_LAD = np.loadtxt(f"{RESULTS_DIR}/KAB06_F_{l}.dat")
+    data_LAD = np.loadtxt(f"{RESULTS_DIR}/KAB06_xchecks_F_{l}.dat")
 
     at = AnchoredText(r'$E_p = {0} \: \rm TeV$'.format(Ep), loc = 'upper left', frameon = False, prop = {'fontsize': 'x-large'})
     plt.gca().add_artist(at)
