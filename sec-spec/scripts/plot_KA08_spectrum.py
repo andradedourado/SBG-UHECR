@@ -73,7 +73,7 @@ def plot_mono_spectrum(ls, Ep):
     plt.yscale('log')
     plt.xlabel(r'$x = E/E_p$')
     plt.ylabel(r'$x \, dN/dx \: \rm [s^{-1}]$')
-    plt.legend(title = 'Particle', loc = 'upper right', bbox_to_anchor = (1., 0.766))
+    plt.legend(title = 'Particle', loc = 'upper right', bbox_to_anchor = (1., 0.767))
 
     if ls == ls_Left:
         plt.savefig(f"{FIGURES_DIR}/plot_mono_spectrum_Ep{int(np.log10(Ep)):02d}_Left.pdf", bbox_inches = 'tight')

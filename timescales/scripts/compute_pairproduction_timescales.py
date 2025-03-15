@@ -1,6 +1,6 @@
-import scipy.constants as const
 from scipy.integrate import quad
 from scipy.special import zeta
+import scipy.constants as const
 import numpy as np
 
 RESULTS_DIR = "../results"

@@ -46,12 +46,12 @@ def plot_photon_spectrum():
     data_IR = np.loadtxt(f"{RESULTS_DIR}/photon_spectrum_IR.dat") 
     data_OPT = np.loadtxt(f"{RESULTS_DIR}/photon_spectrum_OPT.dat")
 
-    E_IR, intensity_IR = data_IR[:,0], data_IR[:,1]   
-    E_OPT, intensity_OPT = data_OPT[:,0], data_OPT[:,1] 
+    E_IR, flux_IR = data_IR[:,0], data_IR[:,1]   
+    E_OPT, flux_OPT = data_OPT[:,0], data_OPT[:,1] 
 
     plt.figure()
-    plt.plot(E_IR * erg_to_eV, E_IR**2 * intensity_IR * erg_to_eV * eV_to_GeV, color = '#FF5555')
-    plt.plot(E_OPT * erg_to_eV, E_OPT**2 * intensity_OPT * erg_to_eV * eV_to_GeV, color = '#5555FF')
+    plt.plot(E_IR * erg_to_eV, E_IR**2 * flux_IR * erg_to_eV * eV_to_GeV, color = '#FF5555')
+    plt.plot(E_OPT * erg_to_eV, E_OPT**2 * flux_OPT * erg_to_eV * eV_to_GeV, color = '#5555FF')
     plot_photon_spectrum_measurements('NGC253')
     plot_photon_spectrum_measurements('M82')
 
