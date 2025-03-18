@@ -1,7 +1,7 @@
 from scipy.integrate import quad
 from scipy.special import zeta
-import scipy.constants as const
 import numpy as np
+import scipy.constants as const
 
 RESULTS_DIR = "../results"
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
