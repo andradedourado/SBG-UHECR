@@ -22,8 +22,7 @@ def plot_timescales_xchecks():
     data_Condo = np.loadtxt(f"{REFERENCES_DIR}/timescales_Condorelli_1H.dat")
 
     data_photopion_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H.dat")
-    data_pp_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H.dat")
-    # data_pp_Condo_LAD[:,1] = np.where(data_pp_Condo_LAD[:,1] < 0, np.finfo(float).max, data_pp_Condo_LAD[:,1])
+    data_pp_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_pp_xchecks_1H.dat")
     data_Condo_LAD = (1 / data_photopion_Condo_LAD[:,1] + 1 / data_pp_Condo_LAD[:,1])**-1
 
     plt.plot(data_Condo[:,0], data_Condo[:,1], label = 'Condo+23')

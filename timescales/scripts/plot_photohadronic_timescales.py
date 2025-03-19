@@ -115,10 +115,10 @@ def plot_timescales():
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    # plot_timescales_comparison(1)
-    # plot_timescales_comparison(7)
-    # plot_timescales_comparison(14)
-    # plot_timescales_comparison(26)
+    plot_timescales_comparison(1)
+    plot_timescales_comparison(7)
+    plot_timescales_comparison(14)
+    plot_timescales_comparison(26)
 
     plot_timescales()
 

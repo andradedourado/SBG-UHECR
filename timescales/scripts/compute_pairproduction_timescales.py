@@ -55,11 +55,25 @@ def phi(kappa):
 
     if kappa < 25:
 
-        return np.pi / 12 * (kappa - 2)**4 / (1 + sum(c[i] * (kappa - 2)**i for i in range(len(c))))
+        sum_c_term = 0
+
+        for i in range(len(c)):
+            sum_c_term += c[i] * (kappa - 2)**(i + 1)
+
+        return np.pi / 12 * (kappa - 2)**4 / (1 + sum_c_term)
     
     elif kappa >= 25:
 
-        return kappa * sum(d[i] * np.log(kappa)**i for i in range(len(d))) / (1 - sum(f[i] * kappa**-i for i in range(len(f))))
+        sum_d_term = 0
+        sum_f_term = 0 
+
+        for i in range(len(d)):
+            sum_d_term += d[i] * np.log(kappa)**i 
+        
+        for i in range(len(f)):
+            sum_f_term += f[i] * kappa**-(i + 1)
+
+        return kappa * sum_d_term / (1 - sum_f_term)
 
 # ----------------------------------------------------------------------------------------------------
 def integrand_interaction_rate(kappa, Gmm):
@@ -75,7 +89,7 @@ def compute_pairproduction_timescales(A, Z, Gmms):
 
     for Gmm in Gmms:
         interaction_rate = const.alpha * r0**2 * const.c * Z**2 * const.m_e / (A * const.m_p) / Gmm
-        interaction_rate = interaction_rate * quad(integrand_interaction_rate, 2, 125, args = (Gmm))[0] * const.m_e * const.c**2
+        interaction_rate = interaction_rate * quad(integrand_interaction_rate, 2, 1e4, args = (Gmm))[0] * const.m_e * const.c**2
         timescales.append(interaction_rate**-1 * s_to_yr)
     
     return np.array(timescales)
@@ -85,8 +99,7 @@ def write_pairproduction_timescales(A, Z):
 
     Gmms = np.logspace(8, 12, num = 100) / A
     E = Gmms * A * m_p 
-    timescales = compute_pairproduction_timescales(A, Z, Gmms)   
-    print(timescales)
+    timescales = compute_pairproduction_timescales(A, Z, Gmms)
     np.savetxt(f"{RESULTS_DIR}/timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------

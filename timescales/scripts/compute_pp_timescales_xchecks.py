@@ -22,8 +22,6 @@ r0 = (const.e**2) / (4 * const.pi * const.epsilon_0 * const.m_e * const.c**2)
 D = 3.7e6 * pc_to_cm # cm  
 R = 225 * pc_to_cm   # cm 
 
-# Negative values for timescales
-
 # ----------------------------------------------------------------------------------------------------
 def phi(kappa):
 
@@ -49,8 +47,21 @@ def phi(kappa):
     f3 = 1837
     f = [f1, f2, f3]
 
-    phi[mask_1] = np.pi / 12 * (kappa[mask_1] - 2)**4 / (1 + sum(c[i] * (kappa[mask_1] - 2)**i for i in range(len(c))))
-    phi[mask_2] = kappa[mask_2] * sum(d[i] * np.log(kappa[mask_2])**i for i in range(len(d))) / (1 - sum(f[i] * kappa[mask_2]**-i for i in range(len(f))))
+    sum_c_term = np.zeros_like(kappa)
+    sum_d_term = np.zeros_like(kappa)
+    sum_f_term = np.zeros_like(kappa)
+
+    for i in range(len(c)):
+        sum_c_term[mask_1] += c[i] * (kappa[mask_1] - 2)**(i + 1)
+    
+    for i in range(len(d)):
+        sum_d_term[mask_2] += d[i] * np.log(kappa[mask_2])**i 
+        
+    for i in range(len(f)):
+        sum_f_term[mask_2] += f[i] * kappa[mask_2]**-(i + 1)
+
+    phi[mask_1] = np.pi / 12 * (kappa[mask_1] - 2)**4 / (1 + sum_c_term[mask_1])
+    phi[mask_2] = kappa[mask_2] * sum_d_term[mask_2] / (1 - sum_f_term[mask_2])
 
     return phi
 
@@ -96,8 +107,6 @@ def write_pairproduction_timescales(A, Z):
     Gmms = np.logspace(8, 12, num = 100) / A
     E = Gmms * A * m_p 
     timescales = compute_pairproduction_timescales(A, Z, Gmms)   
-    print(timescales)
-
     np.savetxt(f"{RESULTS_DIR}/timescales_pp_xchecks_1H.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
