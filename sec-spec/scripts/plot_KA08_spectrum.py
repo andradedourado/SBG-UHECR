@@ -76,12 +76,12 @@ def plot_mono_spectrum(ls, Ep):
     plt.legend(title = 'Particle', loc = 'upper right', bbox_to_anchor = (1., 0.767))
 
     if ls == ls_Left:
-        plt.savefig(f"{FIGURES_DIR}/plot_mono_spectrum_Ep{int(np.log10(Ep)):02d}_Left.pdf", bbox_inches = 'tight')
-        plt.savefig(f"{FIGURES_DIR}/plot_mono_spectrum_Ep{int(np.log10(Ep)):02d}_Left.png", bbox_inches = 'tight', dpi = 300)
+        plt.savefig(f"{FIGURES_DIR}/mono_spectrum_Ep{int(np.log10(Ep)):02d}_Left.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/mono_spectrum_Ep{int(np.log10(Ep)):02d}_Left.png", bbox_inches = 'tight', dpi = 300)
     
     elif ls == ls_Right:
-        plt.savefig(f"{FIGURES_DIR}/plot_mono_spectrum_Ep{int(np.log10(Ep)):02d}_Right.pdf", bbox_inches = 'tight')
-        plt.savefig(f"{FIGURES_DIR}/plot_mono_spectrum_Ep{int(np.log10(Ep)):02d}_Right.png", bbox_inches = 'tight', dpi = 300)
+        plt.savefig(f"{FIGURES_DIR}/mono_spectrum_Ep{int(np.log10(Ep)):02d}_Right.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/mono_spectrum_Ep{int(np.log10(Ep)):02d}_Right.png", bbox_inches = 'tight', dpi = 300)
     
     plt.show()
 

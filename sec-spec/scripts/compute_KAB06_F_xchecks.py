@@ -37,14 +37,19 @@ def F_l(x, Ep, l):
 
         F_nu_mu_2 = B_nu_mu_2 * (1 + k_nu_mu_2 * np.log(x)**2)**3 / (x * (1 + 0.3/x**beta_nu_mu_2)) * (-np.log(x))**5
 
-        y = x / 0.427
+        mask = x < 0.427
+        y = np.zeros_like(x)
+        F_nu_mu_1 = np.zeros_like(x)
+
+        y[mask] = x[mask] / 0.427
+
         B_prime = 1.75 + 0.204*L + 0.010*L**2
         beta_prime = 1 / (1.67 + 0.111*L + 0.0038*L**2)
         k_prime = 1.07 - 0.086*L + 0.002*L**2
 
-        F_nu_mu_1 = B_prime * np.log(y) / y \
-            * ((1 - y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime)))**4 \
-            * (1 / np.log(y) - 4 * beta_prime * y**beta_prime / (1- y**beta_prime) - 4 * k_prime * beta_prime * y**beta_prime * (1 - 2 * y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime))) 
+        F_nu_mu_1[mask] = B_prime * np.log(y[mask]) / y[mask] \
+                * ((1 - y[mask]**beta_prime) / (1 + k_prime * y[mask]**beta_prime * (1 - y[mask]**beta_prime)))**4 \
+                * (1 / np.log(y[mask]) - 4 * beta_prime * y[mask]**beta_prime / (1 - y[mask]**beta_prime) - 4 * k_prime * beta_prime * y[mask]**beta_prime * (1 - 2 * y[mask]**beta_prime) / (1 + k_prime * y[mask]**beta_prime * (1 - y[mask]**beta_prime)))
 
         return F_nu_mu_1 + F_nu_mu_2
 
@@ -72,8 +77,6 @@ def write_F(l):
 
     elif l == 'nu_mu':
             
-        mask = xs < 0.427
-        xs = xs[mask]
         F_0_1TeV = F_l(xs, 0.1, l) 
         F_100TeV = F_l(xs, 100, l) 
         F_1000TeV = F_l(xs, 1000, l)
@@ -83,8 +86,8 @@ def write_F(l):
 # ----------------------------------------------------------------------------------------------------
 if __name__ in '__main__':
 
-    write_F('gmm')
-    write_F('e')
+    # write_F('gmm')
+    # write_F('e')
     write_F('nu_mu')
 
 # ----------------------------------------------------------------------------------------------------

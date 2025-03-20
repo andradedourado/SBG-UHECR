@@ -1,13 +1,12 @@
 from scipy.integrate import quad
-from scipy.integrate import simps
 import numpy as np
 
 RESULTS_DIR = "../results"
 
-alps = [2] #, 1.5]
+alps = [2, 1.5]
 ls = ['gmm', 'nu_mu', 'e']
 
-erg_to_TeV = 6.242e11
+erg_to_TeV = 0.6242
 mb_to_cm2 = 1e-27 
 
 c = 2.998e10 # cm/s
@@ -18,7 +17,7 @@ def xsection_inel(Ep):
 
     L = np.log(Ep) # Ep in TeV
 
-    return 34.3 + 1.88*L + 0.25*L**2 * mb_to_cm2 # cm^2
+    return (34.3 + 1.88*L + 0.25*L**2) * mb_to_cm2 # cm^2
 
 # ----------------------------------------------------------------------------------------------------
 def Jp_norm_integrand(Ep, alp, beta = 1, E0 = 1000): # cm^-3
@@ -66,14 +65,20 @@ def F_l(x, Ep, l):
 
         F_nu_mu_2 = B_nu_mu_2 * (1 + k_nu_mu_2 * np.log(x)**2)**3 / (x * (1 + 0.3/x**beta_nu_mu_2)) * (-np.log(x))**5
 
-        y = x / 0.427
-        B_prime = 1.75 + 0.204*L + 0.010*L**2
-        beta_prime = 1 / (1.67 + 0.111*L + 0.0038*L**2)
-        k_prime = 1.07 - 0.086*L + 0.002*L**2
+        if x < 0.427:
 
-        F_nu_mu_1 = B_prime * np.log(y) / y \
-            * ((1 - y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime)))**4 \
-            * (1 / np.log(y) - 4 * beta_prime * y**beta_prime / (1- y**beta_prime) - 4 * k_prime * beta_prime * y**beta_prime * (1 - 2 * y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime))) 
+            y = x / 0.427
+            B_prime = 1.75 + 0.204*L + 0.010*L**2
+            beta_prime = 1 / (1.67 + 0.111*L + 0.0038*L**2)
+            k_prime = 1.07 - 0.086*L + 0.002*L**2
+
+            F_nu_mu_1 = B_prime * np.log(y) / y \
+                * ((1 - y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime)))**4 \
+                * (1 / np.log(y) - 4 * beta_prime * y**beta_prime / (1- y**beta_prime) - 4 * k_prime * beta_prime * y**beta_prime * (1 - 2 * y**beta_prime) / (1 + k_prime * y**beta_prime * (1 - y**beta_prime))) 
+
+        elif x >= 0.427:
+
+            F_nu_mu_1 = 0
 
         return F_nu_mu_1 + F_nu_mu_2
 
@@ -85,18 +90,22 @@ def spectrum_integrand(x, E, alp, l):
 # ----------------------------------------------------------------------------------------------------
 def spectrum(E, alp, l):
 
-    return c * nH * quad(spectrum_integrand, 1e-1, 5e-1, args = (E, alp, l))[0]
+    return c * nH * quad(spectrum_integrand, 1e-3, 1, args = (E, alp, l))[0]
 
 # ----------------------------------------------------------------------------------------------------
 def write_spectrum(l, alp):
 
-    Es = np.logspace(-5, 3, num = 100) # TeV 
+    Es = np.logspace(-1, 3, num = 100) # TeV 
     spec = []
 
     for E in Es:
         spec.append(spectrum(E, alp, l))
 
-    np.savetxt(f"{RESULTS_DIR}/KAB06_spectrum_{alp}_{l}.dat", np.column_stack((Es, spec)), fmt = "%.15e")
+    if alp == 2:
+        np.savetxt(f"{RESULTS_DIR}/KAB06_spectrum_2_{l}.dat", np.column_stack((Es, spec)), fmt = "%.15e")
+    
+    elif alp == 1.5:
+        np.savetxt(f"{RESULTS_DIR}/KAB06_spectrum_1_5_{l}.dat", np.column_stack((Es, spec)), fmt = "%.15e")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':

@@ -46,7 +46,7 @@ def write_mono_spectrum(l, Ep): # Equation (42)
 if __name__ == '__main__':
 
     for l in ls:
-        write_mono_spectrum(l, 1e20)
+        # write_mono_spectrum(l, 1e20)
         write_mono_spectrum(l, 1e21)
 
 # ----------------------------------------------------------------------------------------------------
