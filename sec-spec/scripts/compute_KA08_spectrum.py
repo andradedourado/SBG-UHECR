@@ -1,4 +1,4 @@
-from scipy.integrate import simps
+from scipy.integrate import trapz, simps
 import numpy as np
 
 RESULTS_DIR = "../results"
@@ -37,7 +37,10 @@ def write_mono_spectrum(l, Ep): # Equation (42)
 
     for ix in range(len(xs)):
         integrand = photon_density(eps) * phi_l[ix,:]
-        spec.append(simps(integrand, eps))
+        if simps(integrand, eps) < 0:
+            spec.append(trapz(integrand, eps))
+        else:
+            spec.append(simps(integrand, eps))
 
     spec = np.array(spec)
     np.savetxt(f"{RESULTS_DIR}/KA08_mono_spectrum_CMB_Ep{int(np.log10(Ep)):02d}_{l}.dat", np.column_stack((xs, spec)), fmt = "%.15e")
@@ -46,7 +49,7 @@ def write_mono_spectrum(l, Ep): # Equation (42)
 if __name__ == '__main__':
 
     for l in ls:
-        # write_mono_spectrum(l, 1e20)
+        write_mono_spectrum(l, 1e20)
         write_mono_spectrum(l, 1e21)
 
 # ----------------------------------------------------------------------------------------------------

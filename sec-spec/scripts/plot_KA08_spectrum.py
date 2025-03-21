@@ -25,7 +25,7 @@ def get_figure_and_set_labels(Ep):
         return 'Figure6'
     
     elif Ep == 1e21:
-        plt.ylim([1e-21, 2e-15])
+        plt.ylim([1e-18, 1e-14])
         return 'Figure7'
 
 # ----------------------------------------------------------------------------------------------------
