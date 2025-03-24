@@ -10,15 +10,36 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
-REFERENCES_DIR = "../references"
 FIGURES_DIR = "../figures"
+REFERENCES_DIR = "../references"
 RESULTS_DIR = "../results"
 
 ls_Left = ['gmm', 'pos', 'e']
 ls_Right = ['anu_mu', 'nu_mu', 'nu_e', 'anu_e']
 
+Ecuts = np.array([0.1, 1, 10, 1000]) * 3e20 # eV
+
 # ----------------------------------------------------------------------------------------------------
-def get_figure_and_set_labels(Ep):
+def get_figure_and_set_limits(Ecut_str):
+
+    if Ecut_str == '0_1':
+        plt.ylim([1e-30, 1e-27])
+        return 'Figure14'
+    
+    elif Ecut_str == '1':
+        plt.ylim([1e-28, 1e-25])
+        return 'Figure15'
+    
+    elif Ecut_str == '10':
+        plt.ylim([1e-28, 1e-25])
+        return 'Figure16'
+    
+    elif Ecut_str == '1000':
+        plt.ylim([1e-28, 1e-25])
+        return 'Figure17'
+
+# ----------------------------------------------------------------------------------------------------
+def get_figure_and_set_limits_mono(Ep):
 
     if Ep == 1e20:
         plt.ylim([1e-19, 2e-16])
@@ -56,7 +77,7 @@ def get_color_and_label(l):
 def plot_mono_spectrum(ls, Ep):
 
     for l in ls:
-        data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_labels(Ep)}_{l}.dat")
+        data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_limits_mono(Ep)}_{l}.dat")
         data_LAD = np.loadtxt(f"{RESULTS_DIR}/KA08_mono_spectrum_CMB_Ep{int(np.log10(Ep)):02d}_{l}.dat")
         plt.plot(data_KA08[:,0], data_KA08[:,1], color = get_color_and_label(l)[0], ls = '--')
         plt.plot(data_LAD[:,0], data_LAD[:,0] * data_LAD[:,1], color = get_color_and_label(l)[0], label = f'{get_color_and_label(l)[1]}')
@@ -86,11 +107,47 @@ def plot_mono_spectrum(ls, Ep):
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_spectrum(ls, Ecut_str):
+
+    for l in ls:
+        data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_limits(Ecut_str)}_{l}.dat")
+        data_LAD = np.loadtxt(f"{RESULTS_DIR}/KA08_spectrum_CMB_{Ecut_str}_{l}.dat")
+        plt.plot(data_KA08[:,0], data_KA08[:,1], color = get_color_and_label(l)[0], ls = '--')
+        plt.plot(data_LAD[:,0], data_LAD[:,0] * data_LAD[:,1], color = get_color_and_label(l)[0], label = f'{get_color_and_label(l)[1]}')
+
+    KA08_lgnd = lines.Line2D([], [], color = 'black', ls = '--', label = 'KA08')
+    LAD_lgnd = lines.Line2D([], [], color = 'black', ls = '-', label = 'LAD')
+    lgnd = plt.legend(title = 'Result', handles = [KA08_lgnd, LAD_lgnd], frameon = True, loc = 'upper right')
+    plt.gca().add_artist(lgnd)
+
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlim([1e17, 1e21])
+    plt.xlabel(r'Energy$\: \rm [eV]$')
+    plt.ylabel(r'$E \, dN/dE \: \rm [cm^{-3} s^{-1}]$')
+    plt.legend(title = 'Particle', loc = 'upper right', bbox_to_anchor = (1., 0.767))
+
+    if ls == ls_Left:
+        plt.savefig(f"{FIGURES_DIR}/spectrum_{Ecut_str}_Left.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/spectrum_{Ecut_str}_Left.png", bbox_inches = 'tight', dpi = 300)
+    
+    elif ls == ls_Right:
+        plt.savefig(f"{FIGURES_DIR}/spectrum_{Ecut_str}_Right.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/spectrum_{Ecut_str}_Right.png", bbox_inches = 'tight', dpi = 300)
+
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_mono_spectrum(ls_Left, 1e20)
-    plot_mono_spectrum(ls_Right, 1e20)
-    plot_mono_spectrum(ls_Left, 1e21)
-    plot_mono_spectrum(ls_Right, 1e21)
+    # plot_mono_spectrum(ls_Left, 1e20)
+    # plot_mono_spectrum(ls_Right, 1e20)
+    # plot_mono_spectrum(ls_Left, 1e21)
+    # plot_mono_spectrum(ls_Right, 1e21)
+
+    for Ecut in Ecuts:
+        Ecut_str = f"{int(Ecut / 3e20)}" if (Ecut / 3e20).is_integer() else f"{Ecut / 3e20:.1f}".replace(".", "_")
+        plot_spectrum(ls_Left, Ecut_str)
+        plot_spectrum(ls_Right, Ecut_str)
 
 # ----------------------------------------------------------------------------------------------------
