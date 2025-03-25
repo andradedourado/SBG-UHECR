@@ -107,13 +107,24 @@ def plot_mono_spectrum(ls, Ep):
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
-def plot_spectrum(ls, Ecut_str):
+def plot_spectrum(ls, Ecut):
+
+    Ecut_str = f"{int(Ecut / 3e20)}" if (Ecut / 3e20).is_integer() else f"{Ecut / 3e20:.1f}".replace(".", "_")
 
     for l in ls:
         data_KA08 = np.loadtxt(f"{REFERENCES_DIR}/KA08_{get_figure_and_set_limits(Ecut_str)}_{l}.dat")
         data_LAD = np.loadtxt(f"{RESULTS_DIR}/KA08_spectrum_CMB_{Ecut_str}_{l}.dat")
         plt.plot(data_KA08[:,0], data_KA08[:,1], color = get_color_and_label(l)[0], ls = '--')
         plt.plot(data_LAD[:,0], data_LAD[:,0] * data_LAD[:,1], color = get_color_and_label(l)[0], label = f'{get_color_and_label(l)[1]}')
+
+    value = Ecut / 3e20
+    if value == 1:
+        text = ""  
+    else:
+        text = f"{value:.1f}" if value % 1 != 0 else f"{int(value)}"
+
+    at = AnchoredText(r'$E_{{\rm cut}} = {0} E_*$'.format(text), loc = 'upper left', frameon = False, prop = {'fontsize': 'x-large'})
+    plt.gca().add_artist(at)
 
     KA08_lgnd = lines.Line2D([], [], color = 'black', ls = '--', label = 'KA08')
     LAD_lgnd = lines.Line2D([], [], color = 'black', ls = '-', label = 'LAD')
@@ -146,8 +157,7 @@ if __name__ == '__main__':
     # plot_mono_spectrum(ls_Right, 1e21)
 
     for Ecut in Ecuts:
-        Ecut_str = f"{int(Ecut / 3e20)}" if (Ecut / 3e20).is_integer() else f"{Ecut / 3e20:.1f}".replace(".", "_")
-        plot_spectrum(ls_Left, Ecut_str)
-        plot_spectrum(ls_Right, Ecut_str)
+        plot_spectrum(ls_Left, Ecut)
+        plot_spectrum(ls_Right, Ecut)
 
 # ----------------------------------------------------------------------------------------------------
