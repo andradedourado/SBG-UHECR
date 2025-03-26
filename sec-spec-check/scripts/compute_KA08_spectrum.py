@@ -121,10 +121,12 @@ def write_spectrum(l, Ecut):
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    for l in ls:
-        # write_mono_spectrum(l, 1e20)
-        # write_mono_spectrum(l, 1e21)
-        for Ecut in Ecuts:
-            write_spectrum(l, Ecut)
+    # for l in ls:
+    #     # write_mono_spectrum(l, 1e20)
+    #     # write_mono_spectrum(l, 1e21)
+    #     for Ecut in Ecuts:
+    #         write_spectrum(l, Ecut)
+
+    print(quad(fp_norm_integrand, 1e9, 1e23, args = (3e20))[0] )
 
 # ----------------------------------------------------------------------------------------------------
