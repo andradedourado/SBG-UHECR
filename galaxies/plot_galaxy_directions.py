@@ -3,6 +3,13 @@ from astropy.coordinates import SkyCoord
 import matplotlib.pyplot as plt
 import numpy as np
 
+plt.rcParams.update({'legend.fontsize': 'medium',
+'legend.title_fontsize': 'medium',
+'axes.labelsize': 'large',
+'axes.titlesize': 'x-large',
+'xtick.labelsize': 'large',
+'ytick.labelsize': 'large'})
+
 data = np.genfromtxt('starburst_galaxies.dat', dtype = None, encoding = None)
 degree = np.pi / 180.
 
