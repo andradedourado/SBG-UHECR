@@ -72,8 +72,25 @@ def plot_photon_spectrum():
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_SED_M82_NGC253():
+
+    plt.figure()
+    plot_photon_spectrum_measurements('NGC253')
+    plot_photon_spectrum_measurements('M82')
+
+    plt.xscale('log')
+    plt.yscale('log')
+    # plt.ylim([1.e-10, 2.e-4])
+    plt.xlabel(r'Energy$\: \rm [eV]$')
+    plt.ylabel(r'$E^2 F(E) \: \rm [GeV \, cm^{-2} \, s^{-1}]$')
+    plt.legend(title = 'Measurements', loc = 'upper right')
+    plt.savefig(f"{FIGURES_DIR}/SED_M82_NGC253.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/SED_M82_NGC253.png", bbox_inches = 'tight', dpi = 300)
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_photon_spectrum()
+    plot_SED_M82_NGC253()
 
 # ----------------------------------------------------------------------------------------------------
