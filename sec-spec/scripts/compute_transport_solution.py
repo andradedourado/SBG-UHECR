@@ -13,13 +13,14 @@ R = 200 * pc_to_cm
 R_SN = 0.05 * yr_to_s 
 V = 4 / 3 * np.pi * R**3 # Volume 
 
-Gmm = 1.22
-Rcut = 10**18.72 # V
+Gmm = 2
+# Gmm = 1.22
+# Rcut = 10**18.72 # V
 
 # ----------------------------------------------------------------------------------------------------
 def injection_term_integrand(E, Z):
 
-    return (R_SN / V) * E**(-Gmm + 1) * np.exp(-E / (Z * Rcut))
+    return (R_SN / V) * E**(-Gmm + 1) # * np.exp(-E / (Z * Rcut))
 
 # ----------------------------------------------------------------------------------------------------
 def injection_term(E, Z): # The rate of injection of particles per unit volume per unit time, Q(E)
@@ -28,7 +29,7 @@ def injection_term(E, Z): # The rate of injection of particles per unit volume p
     E_SN = 1e51 * erg_to_eV 
 
     A = xi_CR * E_SN / quad(injection_term_integrand, 1e9, 1e21, args = (Z))[0] 
-    return A * (R_SN / V) * E**-Gmm * np.exp(-E / (Z * Rcut)) 
+    return A * (R_SN / V) * E**-Gmm # * np.exp(-E / (Z * Rcut)) 
 
 # ----------------------------------------------------------------------------------------------------
 def get_total_timescale(E): # \tau
@@ -44,7 +45,7 @@ def get_total_timescale(E): # \tau
         E_table = data[:,0] * energy_conversion[file]
         tau_table = data[:,1] * yr_to_s  
 
-        f_interp = interp1d(E_table, tau_table, kind = 'linear', bounds_error = False, fill_value = np.inf)
+        f_interp = interp1d(E_table, tau_table, kind = 'cubic', bounds_error = False, fill_value = np.inf)
         interpolated_tau.append(f_interp(E))
 
     total_tau_inv = sum(1 / tau for tau in interpolated_tau)
@@ -53,7 +54,7 @@ def get_total_timescale(E): # \tau
 # ----------------------------------------------------------------------------------------------------
 def write_transport_equation_solution(): # Number of particles per unit volume, n(E)
 
-    E = np.logspace(17, 20, num = 100)
+    E = np.logspace(17, 20, num = 500)
     np.savetxt(f"{RESULTS_DIR}/transport_sol_1H.dat", np.column_stack((E, injection_term(E, 1) / get_total_timescale(E))), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
