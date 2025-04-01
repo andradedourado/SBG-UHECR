@@ -89,7 +89,7 @@ def compute_pairproduction_timescales(A, Z, Gmms):
 
     for Gmm in Gmms:
         interaction_rate = const.alpha * r0**2 * const.c * Z**2 * const.m_e / (A * const.m_p) / Gmm
-        interaction_rate = interaction_rate * quad(integrand_interaction_rate, 2, 1e4, args = (Gmm))[0] * const.m_e * const.c**2
+        interaction_rate = interaction_rate * quad(integrand_interaction_rate, 2, 9e4, args = (Gmm))[0] * const.m_e * const.c**2
         timescales.append(interaction_rate**-1 * s_to_yr)
     
     return np.array(timescales)

@@ -13,7 +13,7 @@ FIGURES_DIR = "../figures"
 RESULTS_DIR = "../results"
 
 # ----------------------------------------------------------------------------------------------------
-def plot_timescales_xchecks():
+def plot_timescales_xchecks(inelasticity):
 
     data_photopion_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_1H.dat")
     data_pp_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_pairproduction_1H.dat")
@@ -21,7 +21,10 @@ def plot_timescales_xchecks():
     
     data_Condo = np.loadtxt(f"{REFERENCES_DIR}/timescales_Condorelli_1H.dat")
 
-    data_photopion_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H.dat")
+    if inelasticity == True:
+        data_photopion_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H_wInelasticity.dat")
+    elif inelasticity == False:
+        data_photopion_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H_woInelasticity.dat")
     data_pp_Condo_LAD = np.loadtxt(f"{RESULTS_DIR}/timescales_pp_xchecks_1H.dat")
     data_Condo_LAD = (1 / data_photopion_Condo_LAD[:,1] + 1 / data_pp_Condo_LAD[:,1])**-1
 
@@ -32,13 +35,20 @@ def plot_timescales_xchecks():
     plt.xlabel(r'$\log_{10}{({\rm Energy}/{\rm eV})}$')
     plt.ylabel(r'Timescales$\: \rm [yr]$')
     plt.legend(title = "Results")
-    plt.savefig(f"{FIGURES_DIR}/timescales_xchecks.pdf", bbox_inches = 'tight')
-    plt.savefig(f"{FIGURES_DIR}/timescales_xchecks.png", bbox_inches = 'tight', dpi = 300)
+    
+    if inelasticity == True:
+        plt.savefig(f"{FIGURES_DIR}/timescales_xchecks_wInelasticity.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/timescales_xchecks_wInelasticity.png", bbox_inches = 'tight', dpi = 300)
+    elif inelasticity == False:
+        plt.savefig(f"{FIGURES_DIR}/timescales_xchecks_woInelasticity.pdf", bbox_inches = 'tight')
+        plt.savefig(f"{FIGURES_DIR}/timescales_xchecks_woInelasticity.png", bbox_inches = 'tight', dpi = 300)
+    
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_timescales_xchecks()
+    plot_timescales_xchecks(True)
+    plot_timescales_xchecks(False)
 
 # ----------------------------------------------------------------------------------------------------

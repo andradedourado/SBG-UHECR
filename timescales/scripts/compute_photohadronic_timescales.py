@@ -120,9 +120,9 @@ def write_timescales(A, Z, interaction):
 if __name__ == '__main__':
 
     write_timescales(1, 1, 'photopion')
-    write_timescales(14, 7, 'photopion')
-    write_timescales(28, 14, 'photopion')
-    write_timescales(56, 26, 'photopion')
+    # write_timescales(14, 7, 'photopion')
+    # write_timescales(28, 14, 'photopion')
+    # write_timescales(56, 26, 'photopion')
 
     # write_timescales(14, 7, 'photodisintegration')
     # write_timescales(28, 14, 'photodisintegration')

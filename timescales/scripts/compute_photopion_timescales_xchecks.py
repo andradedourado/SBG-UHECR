@@ -55,15 +55,19 @@ def photon_density_integral(eps_prime_arr, Gmm):
     return integral_IR + integral_OPT
 
 # ----------------------------------------------------------------------------------------------------
-def inelasticity(x): 
+def Y(x, inelasticity): 
 
     Y_inf = 0.47
     xb = 6e9 # eV
     dlt = 0.33
     s = 0.15
 
-    return Y_inf * (x / xb)**dlt / (1 + (x / xb)**(dlt / s))**s
-
+    if inelasticity == True:
+        return Y_inf * (x / xb)**dlt / (1 + (x / xb)**(dlt / s))**s
+    
+    elif inelasticity == False:
+        return 1
+    
 # ----------------------------------------------------------------------------------------------------
 def get_eps_prime_and_cross_sections(A):
 
@@ -86,7 +90,7 @@ def get_eps_prime_and_cross_sections(A):
     return eps_prime, cross_section
 
 # ----------------------------------------------------------------------------------------------------
-def write_timescales_xchecks(A):
+def write_timescales_xchecks(A, inelasticity):
 
     Gmms = np.logspace(8, 12, num = 100) / A
     E = Gmms * A * mp
@@ -96,15 +100,20 @@ def write_timescales_xchecks(A):
     eps_prime, cross_section = get_eps_prime_and_cross_sections(A)
 
     for Gmm in Gmms:
-        integrand_interaction_rate = c / (2 * Gmm**2) * eps_prime * cross_section * inelasticity(eps_prime) * photon_density_integral(eps_prime, Gmm)
+        integrand_interaction_rate = c / (2 * Gmm**2) * eps_prime * cross_section * Y(eps_prime, inelasticity) * photon_density_integral(eps_prime, Gmm)
         interaction_rate = simps(integrand_interaction_rate, eps_prime)
         timescales.append(interaction_rate**-1 * s_to_yr)
 
-    np.savetxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
+    if inelasticity == True: 
+        np.savetxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H_wInelasticity.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
+
+    elif inelasticity == False: 
+        np.savetxt(f"{RESULTS_DIR}/timescales_photopion_xchecks_1H_woInelasticity.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    write_timescales_xchecks(1)
+    write_timescales_xchecks(1, True)
+    write_timescales_xchecks(1, False)
 
 # ----------------------------------------------------------------------------------------------------
