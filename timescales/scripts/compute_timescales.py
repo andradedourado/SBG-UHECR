@@ -66,7 +66,7 @@ def diffusion_times(E, Z):
 # ----------------------------------------------------------------------------------------------------
 def spallation_times(E, A):
 
-    return (nISM * spallation_cross_section(E, A) * c)**-1 * s_to_yr
+    return (0.5 * nISM * spallation_cross_section(E, A) * c)**-1 * s_to_yr
 
 # ----------------------------------------------------------------------------------------------------
 def compute_timescales(interaction, E, Z, A):
