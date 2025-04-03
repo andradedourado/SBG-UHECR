@@ -20,7 +20,7 @@ Gmm = 2
 # ----------------------------------------------------------------------------------------------------
 def injection_term_integrand(E, Z):
 
-    return (R_SN / V) * E**(-Gmm + 1) # * np.exp(-E / (Z * Rcut))
+    return E**(-Gmm + 1) # * np.exp(-E / (Z * Rcut))
 
 # ----------------------------------------------------------------------------------------------------
 def injection_term(E, Z): # The rate of injection of particles per unit volume per unit time, Q(E)
