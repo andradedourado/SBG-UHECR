@@ -34,9 +34,9 @@ def injection_term(E, Z): # The rate of injection of particles per unit volume p
 # ----------------------------------------------------------------------------------------------------
 def get_total_timescale(E): # \tau
     
-    files = ["timescales_advection.dat", "timescales_diff_1H.dat", "timescales_photopion_1H.dat", "timescales_pairproduction_1H.dat"]
+    files = ["timescales_advection.dat", "timescales_diff_1H.dat", "timescales_photopion_1H.dat", "timescales_pairproduction_1H.dat", "timescales_spal_1H.dat"]
     
-    energy_conversion = {"timescales_advection.dat": 1.e18, "timescales_diff_1H.dat": 1.e18, "timescales_photopion_1H.dat": 1.0, "timescales_pairproduction_1H.dat": 1.0}
+    energy_conversion = {"timescales_advection.dat": 1.e18, "timescales_diff_1H.dat": 1.e18, "timescales_photopion_1H.dat": 1.0, "timescales_pairproduction_1H.dat": 1.0, "timescales_spal_1H.dat": 1.e18}
 
     interpolated_tau = []
 
