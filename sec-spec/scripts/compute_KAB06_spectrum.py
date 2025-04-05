@@ -96,7 +96,7 @@ def spectrum(E, l):
 # ----------------------------------------------------------------------------------------------------
 def write_spectrum(l):
 
-    Es = np.logspace(2, 7, num = 100) * TeV_to_eV  
+    Es = np.logspace(1, 9, num = 100) * TeV_to_eV  
 
     spec = []
 

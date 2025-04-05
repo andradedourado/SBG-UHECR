@@ -80,7 +80,7 @@ def compute_spectrum(l, E):
 # ----------------------------------------------------------------------------------------------------
 def write_spectrum(l):
 
-    Es = np.logspace(17, 21, num = 100)
+    Es = np.logspace(14, 21, num = 100)
     spec = []
 
     for E in Es:

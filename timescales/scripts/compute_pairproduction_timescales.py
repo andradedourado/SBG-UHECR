@@ -97,7 +97,7 @@ def compute_pairproduction_timescales(A, Z, Gmms):
 # ----------------------------------------------------------------------------------------------------
 def write_pairproduction_timescales(A, Z):
 
-    Gmms = np.logspace(8, 12, num = 100) / A
+    Gmms = np.logspace(7, 12, num = 100) / A
     E = Gmms * A * m_p 
     timescales = compute_pairproduction_timescales(A, Z, Gmms)
     np.savetxt(f"{RESULTS_DIR}/timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")

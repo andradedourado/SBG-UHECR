@@ -86,7 +86,7 @@ def compute_timescales(interaction, E, Z, A):
 # ----------------------------------------------------------------------------------------------------
 def write_timescales(interaction, Z, A, nbins = 100):
 
-    E_values = np.logspace(-1, 3, num = nbins)
+    E_values = np.logspace(-2, 3, num = nbins)
     timescales = compute_timescales(interaction, E_values, Z, A)
 
     if interaction == 'advection':

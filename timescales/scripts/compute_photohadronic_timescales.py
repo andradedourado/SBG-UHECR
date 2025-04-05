@@ -117,7 +117,7 @@ def compute_timescales(A, Z, Gmms, interaction):
 # ----------------------------------------------------------------------------------------------------
 def write_timescales(A, Z, interaction):
 
-    Gmms = np.logspace(8, 12, num = 100) / A
+    Gmms = np.logspace(7, 12, num = 100) / A
     E = Gmms * A * mp
     timescales = compute_timescales(A, Z, Gmms, interaction)   
     np.savetxt(f"{RESULTS_DIR}/timescales_{interaction}_{PARTICLES[iZ(Z)]}.dat", np.column_stack((E, timescales)), fmt = "%.15e", delimiter = "\t")
