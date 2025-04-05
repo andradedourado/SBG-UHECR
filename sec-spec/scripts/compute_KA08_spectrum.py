@@ -1,5 +1,6 @@
 from scipy.integrate import trapz, simps
 from scipy.interpolate import interp1d
+from scipy.interpolate import make_interp_spline
 import numpy as np
 
 RESULTS_DIR = "../results"
@@ -52,7 +53,7 @@ def compute_mono_spectrum(l, E): # Equation (42) for a given energy E
         Ep = E / xs[ix]
 
         f = interp1d(eta, phi_l[ix,:], kind = 'linear', bounds_error = False, fill_value = 'extrapolate')
-        eta_new = np.logspace(np.log10(eta[0]), np.log10(eta[-1]), num = 100)
+        eta_new = np.logspace(np.log10(eta[0]), np.log10(eta[-1]), num = 1000)
         phi_l_new = f(eta_new)
 
         eps = eta_new * mp**2 / (4 * Ep)
