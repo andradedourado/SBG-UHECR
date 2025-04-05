@@ -18,7 +18,7 @@ T_OPT = 332.5e-3 * eV_to_J / const.k # K
 NORM_IR = 0.15268288372409347
 NORM_OPT = 2.810860522825165e-09
 
-# Numerical issues with the integration
+# Overflow encountered in exp
 
 # ----------------------------------------------------------------------------------------------------
 def iZ(Z):

@@ -4,7 +4,7 @@ import numpy as np
 
 RESULTS_DIR = "../results"
 
-ls = ['gmm', 'nu_mu', 'e']
+ls = ['gmm', 'nu_mu', 'e', 'nu_e']
 
 eV_to_TeV = 1e-12
 TeV_to_eV = 1e12
@@ -39,7 +39,7 @@ def F_l(x, Ep, l):
 
         return F_gmm
     
-    if l == 'e':
+    if l == 'e' or l == 'nu_e':
 
         B_e = 1 / (69.5 + 2.65*L + 0.3*L**2)
         beta_e = 1 / (0.201 + 0.062*L + 0.00042*L**2)**(1/4)
@@ -67,9 +67,9 @@ def F_l(x, Ep, l):
         beta_prime = 1 / (1.67 + 0.111*L + 0.0038*L**2)
         k_prime = 1.07 - 0.086*L + 0.002*L**2
 
-        F_nu_mu_1[mask] = B_prime * np.log(y[mask]) / y[mask] \
-                * ((1 - y[mask]**beta_prime) / (1 + k_prime * y[mask]**beta_prime * (1 - y[mask]**beta_prime)))**4 \
-                * (1 / np.log(y[mask]) - 4 * beta_prime * y[mask]**beta_prime / (1 - y[mask]**beta_prime) - 4 * k_prime * beta_prime * y[mask]**beta_prime * (1 - 2 * y[mask]**beta_prime) / (1 + k_prime * y[mask]**beta_prime * (1 - y[mask]**beta_prime)))
+        F_nu_mu_1[mask] = B_prime[mask] * np.log(y[mask]) / y[mask] \
+                * ((1 - y[mask]**beta_prime[mask]) / (1 + k_prime[mask] * y[mask]**beta_prime[mask] * (1 - y[mask]**beta_prime[mask])))**4 \
+                * (1 / np.log(y[mask]) - 4 * beta_prime[mask] * y[mask]**beta_prime[mask] / (1 - y[mask]**beta_prime[mask]) - 4 * k_prime[mask] * beta_prime[mask] * y[mask]**beta_prime[mask] * (1 - 2 * y[mask]**beta_prime[mask]) / (1 + k_prime[mask] * y[mask]**beta_prime[mask] * (1 - y[mask]**beta_prime[mask])))
 
         return F_nu_mu_1 + F_nu_mu_2
 
@@ -96,7 +96,8 @@ def spectrum(E, l):
 # ----------------------------------------------------------------------------------------------------
 def write_spectrum(l):
 
-    Es = np.logspace(-1, 3, num = 100) * TeV_to_eV  
+    Es = np.logspace(2, 7, num = 100) * TeV_to_eV  
+
     spec = []
 
     for E in Es:

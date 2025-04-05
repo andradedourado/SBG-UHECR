@@ -20,7 +20,7 @@ def plot_transport_solution():
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel(r'Energy$\: \rm [eV]$')
-    plt.ylabel(r'$n(E) \: \rm [eV^{-1} cm^{-3}]$')
+    plt.ylabel(r'$n(E) \: \rm [eV^{-1}]$')
     plt.savefig(f"{FIGURES_DIR}/transport_sol_1H.pdf", bbox_inches = 'tight')
     plt.savefig(f"{FIGURES_DIR}/transport_sol_1H.png", bbox_inches = 'tight', dpi = 300)
     plt.show()

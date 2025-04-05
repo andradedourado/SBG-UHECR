@@ -10,8 +10,8 @@ pc_to_cm = 3.086e18
 yr_to_s = 60 * 60 * 24 * 365.25
 
 R = 200 * pc_to_cm
-R_SN = 0.05 * yr_to_s 
-V = 4 / 3 * np.pi * R**3 # Volume 
+R_SN = 0.05 / yr_to_s 
+# V = 4 / 3 * np.pi * R**3 # Volume 
 
 Gmm = 2
 # Gmm = 1.22
@@ -29,14 +29,15 @@ def injection_term(E, Z): # The rate of injection of particles per unit volume p
     E_SN = 1e51 * erg_to_eV 
 
     A = xi_CR * E_SN / quad(injection_term_integrand, 1e9, 1e21, args = (Z))[0] 
-    return A * (R_SN / V) * E**-Gmm # * np.exp(-E / (Z * Rcut)) 
+    return A * R_SN * E**-Gmm # * np.exp(-E / (Z * Rcut)) 
+    # return A * (R_SN / V) * E**-Gmm # * np.exp(-E / (Z * Rcut)) 
 
 # ----------------------------------------------------------------------------------------------------
 def get_total_timescale(E): # \tau
     
-    files = ["timescales_advection.dat", "timescales_diff_1H.dat", "timescales_photopion_1H.dat", "timescales_pairproduction_1H.dat", "timescales_spal_1H.dat"]
+    files = ["timescales_advection.dat", "timescales_diff_1H.dat", "timescales_pairproduction_1H.dat", "timescales_photopion_1H.dat", "timescales_spal_1H.dat"]
     
-    energy_conversion = {"timescales_advection.dat": 1.e18, "timescales_diff_1H.dat": 1.e18, "timescales_photopion_1H.dat": 1.0, "timescales_pairproduction_1H.dat": 1.0, "timescales_spal_1H.dat": 1.e18}
+    energy_conversion = {"timescales_advection.dat": 1.e18, "timescales_diff_1H.dat": 1.e18, "timescales_pairproduction_1H.dat": 1.0, "timescales_photopion_1H.dat": 1.0, "timescales_spal_1H.dat": 1.e18}
 
     interpolated_tau = []
 
@@ -55,7 +56,7 @@ def get_total_timescale(E): # \tau
 def write_transport_equation_solution(): # Number of particles per unit volume, n(E)
 
     E = np.logspace(17, 20, num = 500)
-    np.savetxt(f"{RESULTS_DIR}/transport_sol_1H.dat", np.column_stack((E, injection_term(E, 1) / get_total_timescale(E))), fmt = "%.15e", delimiter = "\t")
+    np.savetxt(f"{RESULTS_DIR}/transport_sol_1H.dat", np.column_stack((E, injection_term(E, 1) * get_total_timescale(E))), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
