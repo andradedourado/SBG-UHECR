@@ -2,7 +2,7 @@ import numpy as np
 
 RESULTS_DIR = "../results"
 
-INTERACTIONS = ['advection', 'diff', 'spal']
+INTERACTIONS = ['advection', 'diff', 'MR19_diff', 'spal']
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
 ZSS = [1, 2, 7, 14, 26]
 
@@ -31,7 +31,7 @@ def iZs(Zs):
 # ----------------------------------------------------------------------------------------------------
 def diffusion_coefficient(E, Z, dlt = 5/3, lc = 1):
 
-    rL = 1.081e3 / Z * (E / B) # pc
+    rL = 1.081e3 / Z * (E / B) # pc 
 
     D = np.zeros_like(E)
 
@@ -42,6 +42,15 @@ def diffusion_coefficient(E, Z, dlt = 5/3, lc = 1):
     D[mask_high] = c * (lc * pc_to_cm) / 3 * (rL[mask_high] / lc) ** 2
 
     return D
+
+# ----------------------------------------------------------------------------------------------------
+def MR19_diffusion_coefficient(E, Z, m = 5/3, lc = 1):
+
+    aI = 0.9
+    aL = 0.23
+    Ec = 0.9e-3 * Z * B * lc # EeV
+
+    return c / 3 * (lc * pc_to_cm) * (4 * (E / Ec)**2 + aI * (E / Ec) + aL * (E / Ec)**(2 - m)) # cm^2 / s
 
 # ----------------------------------------------------------------------------------------------------
 def spallation_cross_section(E, A):
@@ -64,6 +73,13 @@ def diffusion_times(E, Z):
     return np.where(diffusion_times > min_time, diffusion_times, min_time) * s_to_yr
 
 # ----------------------------------------------------------------------------------------------------
+def MH19_diffusion_times(E, Z):
+
+    diffusion_times = R**2 / MR19_diffusion_coefficient(E, Z)
+    min_time = R / c
+    return np.where(diffusion_times > min_time, diffusion_times, min_time) * s_to_yr
+
+# ----------------------------------------------------------------------------------------------------
 def spallation_times(E, A):
 
     return (0.5 * nISM * spallation_cross_section(E, A) * c)**-1 * s_to_yr
@@ -76,6 +92,9 @@ def compute_timescales(interaction, E, Z, A):
 
     elif interaction == 'diff':
         return diffusion_times(E, Z)
+
+    elif interaction == 'MR19_diff':
+        return MH19_diffusion_times(E, Z)
 
     elif interaction == 'spal':
         return spallation_times(E, A)
@@ -105,6 +124,8 @@ if __name__ == '__main__':
     write_timescales('advection', 0, 0)
     write_timescales('diff', 1, 1)
     write_timescales('diff', 26, 56)
+    write_timescales('MR19_diff', 1, 1)
+    write_timescales('MR19_diff', 26, 56)
     write_timescales('spal', 1, 1)
     write_timescales('spal', 26, 56)
 
