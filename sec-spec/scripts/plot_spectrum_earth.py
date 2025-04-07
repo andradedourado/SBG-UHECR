@@ -54,18 +54,36 @@ def plot_spectrum_earth(l):
 
     plt.xscale('log')
     plt.yscale('log')
+    plt.ylim(bottom = 1.e-14)
     plt.xlabel(r'Energy$\: \rm [eV]$')
     plt.ylabel(r'$E^2 \, dN/dE \: \rm [GeV \, cm^{-2} \, s^{-1}]$')
-    plt.ylim(bottom = 1.e-14)
     plt.legend()
     plt.savefig(f"{FIGURES_DIR}/spectrum_{l}.pdf", bbox_inches = 'tight')
     plt.savefig(f"{FIGURES_DIR}/spectrum_{l}.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_spectrum_earth_all_galaxies(): # For neutrinos
+
+    data = np.loadtxt(f"{RESULTS_DIR}/spectrum_all_galaxies_nu.dat")
+
+    plt.plot(data[1:,0], data[1:,1] * data[1:,0]**2 * eV_to_GeV, color = 'k')
+
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.ylim(bottom = 1.e-12)
+    plt.xlabel(r'Energy$\: \rm [eV]$')
+    plt.ylabel(r'$E^2 \, dN/dE \: \rm [GeV \, cm^{-2} \, s^{-1}]$')
+    plt.savefig(f"{FIGURES_DIR}/spectrum_all_galaxies_nu.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/spectrum_all_galaxies_nu.png", bbox_inches = 'tight', dpi = 300)
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_spectrum_earth('gmm') # No absorptions
-    plot_spectrum_earth('nu')
+    # plot_spectrum_earth('gmm') # No absorptions
+    # plot_spectrum_earth('nu')
+
+    plot_spectrum_earth_all_galaxies()
 
 # ----------------------------------------------------------------------------------------------------
