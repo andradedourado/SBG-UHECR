@@ -10,6 +10,8 @@ plt.rcParams.update({'legend.fontsize': 'medium',
 'xtick.labelsize': 'large',
 'ytick.labelsize': 'large'})
 
+FIGURES_DIR = "../figures"
+
 data = np.genfromtxt('starburst_galaxies.dat', dtype = None, encoding = None)
 degree = np.pi / 180.
 
@@ -90,8 +92,8 @@ def plot_galaxy_directions():
     plt.yticks(ticks = [-60 * degree, -30 * degree, 0 * degree, 30 * degree, 60 * degree], 
 	labels = [r'$-60\degree$', r'$-30\degree$', r'$0\degree$', r'$30\degree$', r'$60\degree$'])
     plt.grid(linestyle = 'dotted', color = 'black', linewidth = 0.5, zorder = -1.0)
-    plt.savefig('starburst_galaxies.pdf', format = 'pdf', bbox_inches = 'tight')
-    plt.savefig('starburst_galaxies.png', format = 'png', bbox_inches = 'tight', dpi = 300)
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.pdf', format = 'pdf', bbox_inches = 'tight')
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.png', format = 'png', bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
