@@ -2,6 +2,7 @@ from scipy.optimize import curve_fit
 import numpy as np
 import pandas as pd
 
+DATA_DIR = "../data"
 RESULTS_DIR = "../results"
 
 erg_to_eV = 6.242e11 
@@ -19,7 +20,7 @@ kB = 8.6173303e-5   # eV/K
 # ----------------------------------------------------------------------------------------------------
 def load_SED_measurements(galaxy):
 
-    data = pd.read_csv(f"data_{galaxy}.csv")
+    data = pd.read_csv(f"{DATA_DIR}/data_{galaxy}.csv")
 
     frequency = data["Frequency (Hz)"].to_numpy() 
     energy = frequency * h

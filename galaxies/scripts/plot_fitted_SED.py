@@ -9,6 +9,7 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
+DATA_DIR = "../data"
 FIGURES_DIR = "../figures"
 RESULTS_DIR =  "../results"
 
@@ -37,7 +38,7 @@ def SED(E, Cdil, E0, T, sgm):
 # ----------------------------------------------------------------------------------------------------
 def plot_photon_spectrum_measurements(galaxy):
 
-    data = pd.read_csv(f"data_{galaxy}.csv")
+    data = pd.read_csv(f"{DATA_DIR}/data_{galaxy}.csv")
 
     frequency = data["Frequency (Hz)"].to_numpy() 
     energy = frequency * h
@@ -73,6 +74,8 @@ def plot_fitted_SED_IR(galaxy):
     plt.xlabel(r'Energy$\: \rm [eV]$')
     plt.ylabel(r'$E^2 F(E) \: \rm [GeV \, cm^{-2} \, s^{-1}]$')
     plt.legend()
+    plt.savefig(f"{FIGURES_DIR}/fitted_SED_IR.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/fitted_SED_IR.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
