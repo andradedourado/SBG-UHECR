@@ -36,7 +36,7 @@ def plot_dEg_dE_vs_E(izg, zg):
     plt.yscale('log')
     plt.ylim(top = 1e30)
     plt.xlabel(r"Energy$\: \rm [eV]$")
-    plt.ylabel(r"$dE_{\rm g} (E, z_g) / dE$")
+    plt.ylabel(r"$dE_{\rm g} (E, z_{\rm g}) / dE$")
     plt.legend(title = 'Results')
     plt.savefig(f"{FIGURES_DIR}/dEg_dE_vs_E_xchecks_zg{get_zg_arr(zg)}.pdf", bbox_inches = 'tight')
     plt.savefig(f"{FIGURES_DIR}/dEg_dE_vs_E_xchecks_zg{get_zg_arr(zg)}.png", bbox_inches = 'tight', dpi = 300)

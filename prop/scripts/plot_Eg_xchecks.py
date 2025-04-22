@@ -57,7 +57,7 @@ def plot_Eg_vs_E():
     plt.xlim([1e17, 1e22])
     plt.xlabel(r"Energy$\: \rm [eV]$")
     plt.ylabel(r"$E_{\rm g} \: \rm [eV]$")
-    plt.legend(title = r'$z_{g}$')
+    plt.legend(title = r'$z_{\rm g}$')
     plt.savefig(f"{FIGURES_DIR}/Eg_vs_E.pdf", bbox_inches = 'tight')
     plt.savefig(f"{FIGURES_DIR}/Eg_vs_E.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
@@ -91,10 +91,10 @@ def plot_Eg_vs_z_xchecks(iE, E):
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    # for izg, zg in enumerate([0.05, 0.5, 1]):
-    #     plot_Eg_vs_E_xchecks(izg, zg)
+    for izg, zg in enumerate([0.05, 0.5, 1]):
+        plot_Eg_vs_E_xchecks(izg, zg)
 
-    # plot_Eg_vs_E()
+    plot_Eg_vs_E()
 
     for iE, E in enumerate([1e17, 1e18, 1e19, 1e20, 1e21]):
         plot_Eg_vs_z_xchecks(iE, E)
