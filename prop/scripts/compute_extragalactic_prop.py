@@ -1,6 +1,7 @@
 from compute_pairproduction_beta import compute_pairproduction_beta
 from compute_photopion_beta import compute_photopion_beta
 from scipy.integrate import odeint
+# from scipy.interpolate import interp1d
 import numpy as np 
 
 RESULTS_DIR = "../results"
@@ -16,6 +17,14 @@ OmgLbd = 0.685
 OmgM = 0.315
 
 # ----------------------------------------------------------------------------------------------------
+def get_zg_arr(zg):
+
+    if zg == int(zg):
+        return f"{int(zg)}"
+    else:
+        return str(zg).replace(".", "_")
+
+# ----------------------------------------------------------------------------------------------------
 def H(z): # Hubble parameter
 
     return H0 * np.sqrt((1 + z)**3 * OmgM + OmgLbd)
@@ -28,10 +37,14 @@ def abs_dt_dz(z):
 # ----------------------------------------------------------------------------------------------------
 def dE_dz(E, z):
 
-    return E[0] / (1 + z) + E[0] * abs_dt_dz(z) * (compute_pairproduction_beta(1, 1, E[0] / mp, z) + compute_photopion_beta(E[0] / mp, z))
+    # data = np.loadtxt(f"{RESULTS_DIR}/beta.dat")
+    # interp_beta = interp1d(data[:,0], data[:,1], kind = 'linear', bounds_error = False, fill_value = np.nan)
+    # return E / (1 + z) + abs_dt_dz(z) * E * (1 + z)**3 * interp_beta(E * (1 + z)) 
+
+    return E / (1 + z) + abs_dt_dz(z) * E * (1 + z)**3 * (compute_pairproduction_beta(E / mp * (1 + z)) + compute_photopion_beta(E / mp * (1 + z))) 
 
 # ----------------------------------------------------------------------------------------------------
-def write_Eg_vs_E(zg):
+def write_Eg_vs_E_xchecks(zg):
 
     Eg = np.zeros_like(E_arr)
     z_arr = np.linspace(0, zg, num = 50)
@@ -39,26 +52,21 @@ def write_Eg_vs_E(zg):
     for iEg, E in enumerate(E_arr):
         Eg[iEg] = odeint(dE_dz, E, z_arr)[-1]
 
-    if zg == int(zg):
-        zg_str = f"{int(zg)}"
-    else:
-        zg_str = str(zg).replace(".", "_")
-
-    np.savetxt(f"{RESULTS_DIR}/Eg_vs_E_xchecks_zg{zg_str}.dat", np.column_stack((E_arr, Eg)), fmt = "%.15e", delimiter = "\t")
+    np.savetxt(f"{RESULTS_DIR}/Eg_vs_E_xchecks_zg{get_zg_arr(zg)}.dat", np.column_stack((E_arr, Eg)), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
-def write_Eg_vs_zg(E):
+def write_Eg_vs_z_xchecks(E):
 
-    z_arr = np.linspace(0, 1, num = 1000)
-    np.savetxt(f"{RESULTS_DIR}/Eg_vs_zg_xchecks_E{int(np.log10(E))}.dat", np.column_stack((z_arr, odeint(dE_dz, E, z_arr))), fmt = "%.15e", delimiter = "\t")
+    z_arr = np.linspace(0, 1, num = 100)
+    np.savetxt(f"{RESULTS_DIR}/Eg_vs_z_xchecks_E{int(np.log10(E))}.dat", np.column_stack((z_arr, odeint(dE_dz, E, z_arr))), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    for zg in [0.05, 0.5, 1, 2, 3]:
-        write_Eg_vs_E(zg)
+    for zg in [0.01, 0.05, 0.5, 1, 2, 3]:
+        write_Eg_vs_E_xchecks(zg)
 
     for E in [1e17, 1e18, 1e19, 1e20, 1e21]:
-        write_Eg_vs_zg(E)
+        write_Eg_vs_z_xchecks(E)
 
 # ----------------------------------------------------------------------------------------------------
