@@ -12,9 +12,9 @@ kB = 8.6173303e-5    # eV/K
 mp = 0.9383e9        # eV 
 
 # ----------------------------------------------------------------------------------------------------
-def I(eps, Gmm, z, T = 2.7):
+def I(eps, Gmm, T = 2.7):
 
-    return -kB / (np.pi**2 * (hbar * c)**3) * T * (1 + z) * np.log(1. - np.exp(-(eps)/(2 * Gmm * kB * T * (1 + z)))) * (1 + z)**3
+    return -kB / (np.pi**2 * (hbar * c)**3) * T * np.log(1. - np.exp(-(eps)/(2 * Gmm * kB * T)))
 
 # ----------------------------------------------------------------------------------------------------
 def inelasticity(x):
@@ -48,10 +48,10 @@ def get_eps_and_cross_sections():
     return eps, cross_section
 
 # ----------------------------------------------------------------------------------------------------
-def compute_photopion_beta(Gmm, z): # 1 / s
+def compute_photopion_beta(Gmm): # 1 / s
 
     eps, cross_section = get_eps_and_cross_sections()
-    integrand_beta = c / (2 * Gmm**2) * eps * cross_section * inelasticity(eps) * I(eps, Gmm, z)
+    integrand_beta = c / (2 * Gmm**2) * eps * cross_section * inelasticity(eps) * I(eps, Gmm)
     return simps(integrand_beta, eps)
 
 # ----------------------------------------------------------------------------------------------------

@@ -21,7 +21,7 @@ c = 3e10 * cm_to_Mpc # Mpc / s
 def plot_beta_xchecks():
 
     data_AC = np.loadtxt(f"{REFERENCES_DIR}/AC_log10_beta.dat")
-    data_LAD = np.loadtxt(f"{RESULTS_DIR}/beta_xchecks.dat")
+    data_LAD = np.loadtxt(f"{RESULTS_DIR}/beta.dat")
     data_RA = np.loadtxt(f"{REFERENCES_DIR}/RA_attenuation_length_1H.dat")
     
     plt.plot(data_AC[:,0], pow(10, data_AC[:,1])**-1 * c / s_to_yr, label = 'AC')

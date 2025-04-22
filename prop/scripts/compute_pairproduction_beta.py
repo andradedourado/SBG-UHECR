@@ -9,9 +9,9 @@ r0 = (const.e**2) / (4 * const.pi * const.epsilon_0 * const.m_e * const.c**2)
 # Overflow encountered in exp
 
 # ----------------------------------------------------------------------------------------------------
-def photon_density(eps, z, T = 2.7): # Number of photons per unit volume and energy
+def photon_density(eps, T = 2.7): # Number of photons per unit volume and energy
 
-    return 8 * np.pi / (const.h * const.c)**3 * eps**2 / (np.exp(eps/(const.k * T * (1 + z))) - 1) * (1 + z)**3
+    return 8 * np.pi / (const.h * const.c)**3 * eps**2 / (np.exp(eps/(const.k * T)) - 1)
 
 # ----------------------------------------------------------------------------------------------------
 def phi(kappa):
@@ -56,17 +56,20 @@ def phi(kappa):
         return kappa * sum_d_term / (1 - sum_f_term)
 
 # ----------------------------------------------------------------------------------------------------
-def integrand_beta(kappa, Gmm, z):
+def integrand_beta(kappa, Gmm):
 
     eps = kappa * const.m_e * const.c**2 / (2 * Gmm)
 
-    return photon_density(eps, z) * phi(kappa) / kappa**2
+    return photon_density(eps) * phi(kappa) / kappa**2
 
 # ----------------------------------------------------------------------------------------------------
-def compute_pairproduction_beta(A, Z, Gmm, z): # 1 / s 
+def compute_pairproduction_beta(Gmm): # 1 / s 
+
+    A = 1
+    Z = 1
 
     b = const.alpha * r0**2 * const.c * Z**2 * const.m_e / (A * const.m_p) / Gmm
-    b = b * quad(integrand_beta, 2, 1e4, args = (Gmm, z))[0] * const.m_e * const.c**2 
+    b = b * quad(integrand_beta, 2, 1e4, args = (Gmm))[0] * const.m_e * const.c**2 
     return b
 
 # ----------------------------------------------------------------------------------------------------
