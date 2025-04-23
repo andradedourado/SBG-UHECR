@@ -23,7 +23,12 @@ def get_zg_arr(zg):
     
 # ----------------------------------------------------------------------------------------------------
 def plot_dEg_dE_vs_E(izg, zg):
+    
+    if zg != 1:
+        data_AA = np.loadtxt(f"{REFERENCES_DIR}/AA_dEgdE_vs_E_zg{get_zg_arr(zg)}.dat")
+        plt.plot(data_AA[:,0], data_AA[:,1], label = 'AA')
 
+    data_AC = np.loadtxt(f"{REFERENCES_DIR}/AC_dEgdE_vs_E.txt")
     data_AC = np.loadtxt(f"{REFERENCES_DIR}/AC_dEgdE_vs_E.txt")
     data_LAD = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}.dat")
 
