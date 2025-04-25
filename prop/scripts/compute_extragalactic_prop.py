@@ -113,7 +113,7 @@ def injection_term(E):
 def write_single_source_solution(zg): 
 
     Eg = np.loadtxt(f"{RESULTS_DIR}/Eg_vs_E_xchecks_zg{get_zg_arr(zg)}.dat")[:,1]
-    dEg_dE = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}.dat")[:,1]
+    dEg_dE = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}_direct.dat")[:,1]
 
     Q0 = injection_term(Eg)
 
@@ -128,10 +128,10 @@ if __name__ == '__main__':
     # for E in [1e17, 1e18, 1e19, 1e20, 1e21]:
     #     write_Eg_vs_z_xchecks(E)
 
-    for zg in [0.05, 0.5, 1, 2, 3]:
-        write_dEg_dE(zg)
-
     # for zg in [0.05, 0.5, 1, 2, 3]:
-    #     write_single_source_solution(zg)    
+    #     write_dEg_dE(zg)
+
+    for zg in [0.05, 0.5, 1, 2, 3]:
+        write_single_source_solution(zg)    
 
 # ----------------------------------------------------------------------------------------------------

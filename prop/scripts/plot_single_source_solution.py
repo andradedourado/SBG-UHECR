@@ -27,7 +27,7 @@ def injection_term(E):
 # ----------------------------------------------------------------------------------------------------
 def plot_single_source_solution():
 
-    for izg, zg in enumerate([0.05, 0.5, 1]):
+    for izg, zg in enumerate([0.05, 0.5, 1, 2]):
         data = np.loadtxt(f"{RESULTS_DIR}/single_source_solution_zg{get_zg_str(zg)}.dat")
         mask = (data[:,1] < 1e30) & np.isfinite(data[:,1])
         plt.plot(data[:,0][mask], data[:,1][mask], label = f'${zg}$')
