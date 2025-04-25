@@ -92,12 +92,17 @@ def compute_dEg_dE(E, zg):
 # ----------------------------------------------------------------------------------------------------
 def write_dEg_dE(zg):
 
-    dEg_dE = np.zeros_like(E_arr)
+    # dEg_dE = np.zeros_like(E_arr)
 
-    for iE, E in enumerate(E_arr):
-        dEg_dE[iE] = compute_dEg_dE(E, zg)
+    # for iE, E in enumerate(E_arr):
+    #     dEg_dE[iE] = compute_dEg_dE(E, zg)
 
-    np.savetxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}.dat", np.column_stack((E_arr, dEg_dE)), fmt = "%.15e")
+    # np.savetxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}.dat", np.column_stack((E_arr, dEg_dE)), fmt = "%.15e")
+
+    data = np.loadtxt(f"{RESULTS_DIR}/Eg_vs_E_xchecks_zg{get_zg_arr(zg)}.dat")
+    dEg_dE = data[:,1] * np.gradient(np.log(data[:,1]), data[:,0])
+
+    np.savetxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}_direct.dat", np.column_stack((E_arr, dEg_dE)), fmt = "%.15e")
 
 # ----------------------------------------------------------------------------------------------------
 def injection_term(E):
@@ -123,10 +128,10 @@ if __name__ == '__main__':
     # for E in [1e17, 1e18, 1e19, 1e20, 1e21]:
     #     write_Eg_vs_z_xchecks(E)
 
-    # for zg in [0.05, 0.5, 1, 2, 3]:
-    #     write_dEg_dE(zg)
-
     for zg in [0.05, 0.5, 1, 2, 3]:
-        write_single_source_solution(zg)    
+        write_dEg_dE(zg)
+
+    # for zg in [0.05, 0.5, 1, 2, 3]:
+    #     write_single_source_solution(zg)    
 
 # ----------------------------------------------------------------------------------------------------

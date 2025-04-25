@@ -29,7 +29,7 @@ def plot_dEg_dE_vs_E(izg, zg):
         plt.plot(data_AA[:,0], data_AA[:,1], label = 'AA')
 
     data_AC = np.loadtxt(f"{REFERENCES_DIR}/AC_dEgdE_vs_E.txt")
-    data_LAD = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_str(zg)}.dat")
+    data_LAD = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_str(zg)}_direct.dat")
 
     plt.plot(data_AC[:,0], data_AC[:,izg+1], label = 'AC')
     plt.plot(data_LAD[:,0], data_LAD[:,1], label = 'LAD')
@@ -38,7 +38,7 @@ def plot_dEg_dE_vs_E(izg, zg):
 
     plt.xscale('log')
     plt.yscale('log')
-    plt.ylim(top = 1e30)
+    plt.ylim(top = 1e13)
     plt.xlabel(r"Energy$\: \rm [eV]$")
     plt.ylabel(r"$dE_{\rm g} (E, z_{\rm g}) / dE$")
     plt.legend(title = 'Results')
