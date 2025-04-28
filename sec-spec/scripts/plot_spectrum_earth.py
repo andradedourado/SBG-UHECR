@@ -17,13 +17,11 @@ Mpc_to_cm = 3.086e24
 
 D = 3.7 * Mpc_to_cm
 R = 200 * pc_to_cm
-# V = 4 / 3 * np.pi * R**3
 
 # ----------------------------------------------------------------------------------------------------
 def compute_spectrum_earth(spec):
 
     return spec / (4 * np.pi * D**2)
-    # return spec * V / (4 * np.pi * D**2)
 
 # ----------------------------------------------------------------------------------------------------
 def plot_spectrum_earth(l):
@@ -79,11 +77,29 @@ def plot_spectrum_earth_all_galaxies(part): # For neutrinos
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_proton_spectrum(): # No extragalactic propagation
+
+    data = np.loadtxt(f"{RESULTS_DIR}/proton_spectrum.dat")
+
+    plt.plot(data[:,0], data[:,1], c = 'k')
+
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel(r'Energy$\: \rm [eV]$')
+    plt.ylabel(r'$dN/dE \: \rm [cm^{-2} \, eV^{-1} \, s^{-1}]$')
+    plt.savefig(f"{FIGURES_DIR}/proton_spectrum.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/proton_spectrum.png", bbox_inches = 'tight', dpi = 300)
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     # plot_spectrum_earth('gmm') # No absorptions
     # plot_spectrum_earth('nu')
 
-    plot_spectrum_earth_all_galaxies('gmm')
+    # plot_spectrum_earth_all_galaxies('gmm') # No absorptions
+    # plot_spectrum_earth_all_galaxies('nu')
+
+    plot_proton_spectrum()
 
 # ----------------------------------------------------------------------------------------------------

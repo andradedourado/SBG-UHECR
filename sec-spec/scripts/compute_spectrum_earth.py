@@ -3,8 +3,10 @@ import numpy as np
 
 GALAXIES_DIR = "../../galaxies/scripts"
 RESULTS_DIR = "../results"
+TIMESCALES_DIR = "../../timescales/results"
 
 Mpc_to_cm = 3.086e24
+yr_to_s = 60 * 60 * 24 * 365.25
 
 # ----------------------------------------------------------------------------------------------------
 def interpolate_spectrum(E, file):
@@ -36,9 +38,40 @@ def compute_spectrum_earth(part):
     np.savetxt(f"{RESULTS_DIR}/spectrum_all_galaxies_{part}.dat", np.column_stack((E, spec)), fmt = "%.15e", delimiter = "\t")
 
 # ----------------------------------------------------------------------------------------------------
+def compute_proton_spectrum(): # No extragalactic propagation
+    
+    data_galaxies = np.genfromtxt(f"{GALAXIES_DIR}/starburst_galaxies.dat", dtype = None, encoding = None)
+
+    E = np.logspace(16, 20, num = 500)
+
+    files = ["timescales_advection.dat", "timescales_diff_1H.dat"]
+
+    interpolated_tau = []
+    
+    for file in files:
+        data = np.loadtxt(f"{TIMESCALES_DIR}/{file}")
+        E_table = data[:,0] * 1e18
+        tau_table = data[:,1] * yr_to_s  
+        f_interp = interp1d(E_table, tau_table, kind = 'linear', bounds_error = False, fill_value = np.inf)
+        interpolated_tau.append(f_interp(E))
+    tau_inv_esc = sum(1 / tau for tau in interpolated_tau)
+    tau_esc = 1 / tau_inv_esc
+
+    Q_esc = np.loadtxt(f"{RESULTS_DIR}/transport_sol_1H.dat")[:,1] / tau_esc
+    spec = np.zeros_like(Q_esc)
+
+    for igal in range(len(data_galaxies)):
+        D = data_galaxies[igal][8] * Mpc_to_cm
+        spec += Q_esc / (4 * np.pi * D**2)
+
+    np.savetxt(f"{RESULTS_DIR}/proton_spectrum.dat", np.column_stack((E, spec)), fmt = "%.15e", delimiter = "\t")
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    compute_spectrum_earth('gmm')
+    # compute_spectrum_earth('gmm')
     # compute_spectrum_earth('nu')
+    
+    compute_proton_spectrum()
 
 # ----------------------------------------------------------------------------------------------------
