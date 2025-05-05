@@ -8,6 +8,7 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
+FIGURES_DIR = "../figures"
 REFERENCES_DIR = "../references"
 RESULTS_DIR = "../results"
 
@@ -18,11 +19,6 @@ def get_zg_str(zg):
         return f"{int(zg)}"
     else:
         return str(zg).replace(".", "_")
-
-# ----------------------------------------------------------------------------------------------------
-def injection_term(E):
-
-    return E**-2
 
 # ----------------------------------------------------------------------------------------------------
 def plot_single_source_solution():
@@ -37,6 +33,8 @@ def plot_single_source_solution():
     plt.xlabel(r"Energy$\: \rm [eV]$")
     plt.ylabel(r"$Q_0(E_{\rm g}(E, z_{\rm g}))dE_{\rm g}(E, z_{\rm g})/dE \: \rm [arb. units]$")
     plt.legend(title = r'$z_{\rm g}$')
+    plt.savefig(f"{FIGURES_DIR}/single_source_solution.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/single_source_solution.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------

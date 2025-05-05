@@ -105,19 +105,20 @@ def write_dEg_dE(zg):
     np.savetxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}_direct.dat", np.column_stack((E_arr, dEg_dE)), fmt = "%.15e")
 
 # ----------------------------------------------------------------------------------------------------
-def injection_term(E):
-
-    return E**-2
+def injection_term(E, case):
+    
+    if case == "E-2":
+        return E**-2
 
 # ----------------------------------------------------------------------------------------------------
-def write_single_source_solution(zg): 
+def write_single_source_solution(zg, case): 
 
     Eg = np.loadtxt(f"{RESULTS_DIR}/Eg_vs_E_xchecks_zg{get_zg_arr(zg)}.dat")[:,1]
     dEg_dE = np.loadtxt(f"{RESULTS_DIR}/dEg_dE_zg{get_zg_arr(zg)}_direct.dat")[:,1]
 
-    Q0 = injection_term(Eg)
+    Q0 = injection_term(Eg, case)
 
-    np.savetxt(f"{RESULTS_DIR}/single_source_solution_zg{get_zg_arr(zg)}.dat", np.column_stack((E_arr, Q0 * dEg_dE)), fmt = "%.15e")
+    np.savetxt(f"{RESULTS_DIR}/single_source_solution_zg{get_zg_arr(zg)}_inj{case}.dat", np.column_stack((E_arr, Q0 * dEg_dE)), fmt = "%.15e")
 
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -132,6 +133,6 @@ if __name__ == '__main__':
     #     write_dEg_dE(zg)
 
     for zg in [0.05, 0.5, 1, 2, 3]:
-        write_single_source_solution(zg)    
+        write_single_source_solution(zg, "E-2")
 
 # ----------------------------------------------------------------------------------------------------
