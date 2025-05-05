@@ -9,11 +9,15 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'ytick.labelsize': 'x-large'})
 
 FIGURES_DIR = "../figures"
+REFERENCES_DIR = "../references"
 RESULTS_DIR = "../results"
 
 eV_to_GeV = 1e-9
-pc_to_cm = 3.086e18
+km_to_cm = 1e5
+m_to_cm = 1e2
 Mpc_to_cm = 3.086e24
+pc_to_cm = 3.086e18
+yr_to_s = 60 * 60 * 24 * 365.25
 
 D = 3.7 * Mpc_to_cm
 R = 200 * pc_to_cm
@@ -61,7 +65,7 @@ def plot_spectrum_earth(l):
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
-def plot_spectrum_earth_all_galaxies(part): # For neutrinos
+def plot_spectrum_earth_all_galaxies(part):
 
     data = np.loadtxt(f"{RESULTS_DIR}/spectrum_all_galaxies_{part}.dat")
 
@@ -77,18 +81,18 @@ def plot_spectrum_earth_all_galaxies(part): # For neutrinos
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
-def plot_proton_spectrum(): # No extragalactic propagation
+def plot_proton_intensity(): 
 
-    data = np.loadtxt(f"{RESULTS_DIR}/proton_spectrum.dat")
+    data = np.loadtxt(f"{RESULTS_DIR}/proton_intensity.dat")
 
-    plt.plot(data[:,0], data[:,1], c = 'k')
+    plt.plot(data[:,0], data[:,0]**2 * data[:,1], c = 'k')
 
     plt.xscale('log')
     plt.yscale('log')
     plt.xlabel(r'Energy$\: \rm [eV]$')
-    plt.ylabel(r'$dN/dE \: \rm [cm^{-2} \, eV^{-1} \, s^{-1}]$')
-    plt.savefig(f"{FIGURES_DIR}/proton_spectrum.pdf", bbox_inches = 'tight')
-    plt.savefig(f"{FIGURES_DIR}/proton_spectrum.png", bbox_inches = 'tight', dpi = 300)
+    plt.ylabel(r'$E^2 \times {\rm Intensity} \: \rm [eV \, cm^{-2} \, s^{-1} \, sr^{-1}]$')
+    plt.savefig(f"{FIGURES_DIR}/proton_intensity.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/proton_intensity.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
@@ -99,7 +103,7 @@ if __name__ == '__main__':
 
     # plot_spectrum_earth_all_galaxies('gmm') # No absorptions
     # plot_spectrum_earth_all_galaxies('nu')
-
-    plot_proton_spectrum()
+    
+    plot_proton_intensity() # No extragalactic propagation
 
 # ----------------------------------------------------------------------------------------------------
