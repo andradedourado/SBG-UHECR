@@ -12,7 +12,7 @@ plt.rcParams.update({'legend.fontsize': 'medium',
 
 FIGURES_DIR = "../figures"
 
-data = np.genfromtxt('starburst_galaxies.dat', dtype = None, encoding = None)
+data = np.genfromtxt(f'starburst_galaxies.dat', dtype = None, encoding = None)
 degree = np.pi / 180.
 
 # ----------------------------------------------------------------------------------------------------
@@ -43,25 +43,45 @@ def countours_auger_sky(nbins = int(1.e2)):
     return countours
 
 # ----------------------------------------------------------------------------------------------------
-def ra_dec_to_gal_lat(idata):
+def ra_dec_to_gal_lat(ra, dec):
      
-    c_equatorial = SkyCoord(ra = data[idata][4] * u.degree, dec = data[idata][5] * u.degree, frame = 'icrs', unit = 'deg')
+    c_equatorial = SkyCoord(ra = ra * u.degree, dec = dec * u.degree, frame = 'icrs', unit = 'deg')
     c_galactic = c_equatorial.galactic
 			
     return c_galactic.b.radian
 
 # ----------------------------------------------------------------------------------------------------
-def ra_dec_to_gal_lon(idata):
+def ra_dec_to_gal_lon(ra, dec):
 
-    c_equatorial = SkyCoord(ra = data[idata][4] * u.degree, dec = data[idata][5] * u.degree, frame = 'icrs', unit = 'deg')
+    c_equatorial = SkyCoord(ra = ra * u.degree, dec = dec * u.degree, frame = 'icrs', unit = 'deg')
     c_galactic = c_equatorial.galactic
 			
-    l = c_galactic.l.radian			
-			
-    if 2*np.pi >= l >= np.pi:			
-        return 2*np.pi - l
-    elif 0 <= l <= np.pi:
-	    return -l
+    l = c_galactic.l.radian	
+
+    l_transformed = np.empty_like(l)
+
+    # Python coordinates
+    mask1 = (l >= np.pi) & (l <= 2 * np.pi)
+    mask2 = (l >= 0) & (l <= np.pi)
+
+    l_transformed[mask1] = 2 * np.pi - l[mask1]
+    l_transformed[mask2] = -l[mask2]
+
+    return l_transformed		
+
+# ----------------------------------------------------------------------------------------------------
+def get_directions_in_galactic_coords():
+
+    gal_lat = np.zeros(len(data))
+    gal_lon = np.zeros(len(data))
+    dist_mpc = np.zeros(len(data))
+
+    for idata in range(len(data)):
+        gal_lat[idata] = ra_dec_to_gal_lat(data[idata][4], data[idata][5])
+        gal_lon[idata] = ra_dec_to_gal_lon(data[idata][4], data[idata][5])
+        dist_mpc[idata] = data[idata][8]
+
+    return gal_lat, gal_lon, dist_mpc
 
 # ----------------------------------------------------------------------------------------------------
 def plot_galaxy_directions():
@@ -70,15 +90,7 @@ def plot_galaxy_directions():
     axs = plt.subplot(111, projection = 'mollweide')
     axs.set_longitude_grid_ends(90)
 
-    gal_lat = np.zeros(len(data))
-    gal_lon = np.zeros(len(data))
-    dist_mpc = np.zeros(len(data))
-
-    for idata in range(len(data)):
-        gal_lat[idata] = ra_dec_to_gal_lat(idata)
-        gal_lon[idata] = ra_dec_to_gal_lon(idata)
-        dist_mpc[idata] = data[idata][8]
-
+    gal_lat, gal_lon, dist_mpc = get_directions_in_galactic_coords()
     s_factor = 1000 
     marker_sizes = s_factor / (dist_mpc ** 2)
 	
@@ -92,8 +104,8 @@ def plot_galaxy_directions():
     plt.yticks(ticks = [-60 * degree, -30 * degree, 0 * degree, 30 * degree, 60 * degree], 
 	labels = [r'$-60\degree$', r'$-30\degree$', r'$0\degree$', r'$30\degree$', r'$60\degree$'])
     plt.grid(linestyle = 'dotted', color = 'black', linewidth = 0.5, zorder = -1.0)
-    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.pdf', format = 'pdf', bbox_inches = 'tight')
-    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.png', format = 'png', bbox_inches = 'tight', dpi = 300)
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.pdf', bbox_inches = 'tight')
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies.png', bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
