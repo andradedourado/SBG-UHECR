@@ -17,7 +17,7 @@ Gmm = 2
 # ----------------------------------------------------------------------------------------------------
 def injection_term_integrand(E, Z):
 
-    return E**(-Gmm + 1) # * np.exp(-E / (Z * Rcut))
+    return E**(-Gmm + 1)
 
 # ----------------------------------------------------------------------------------------------------
 def injection_term(E, Z): # The rate of injection of particles per unit volume per unit time, Q(E)
@@ -26,7 +26,7 @@ def injection_term(E, Z): # The rate of injection of particles per unit volume p
     E_SN = 1e51 * erg_to_eV 
 
     A = xi_CR * E_SN / quad(injection_term_integrand, 1e9, 1e21, args = (Z))[0] 
-    return A * R_SN * E**-Gmm # * np.exp(-E / (Z * Rcut)) 
+    return A * R_SN * E**-Gmm 
 
 # ----------------------------------------------------------------------------------------------------
 def get_total_timescale(E): # \tau
