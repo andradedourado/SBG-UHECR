@@ -10,9 +10,12 @@ plt.rcParams.update({'legend.fontsize': 'medium',
 'xtick.labelsize': 'large',
 'ytick.labelsize': 'large'})
 
+DATA_DIR = "../data"
 FIGURES_DIR = "../figures"
 
 data = np.genfromtxt(f'starburst_galaxies.dat', dtype = None, encoding = None)
+event_data = np.loadtxt(f'{DATA_DIR}/AugerApJS2022_Yr_JD_UTC_Th_Ph_RA_Dec_E_Expo.dat')
+
 degree = np.pi / 180.
 
 # ----------------------------------------------------------------------------------------------------
@@ -70,7 +73,7 @@ def ra_dec_to_gal_lon(ra, dec):
     return l_transformed		
 
 # ----------------------------------------------------------------------------------------------------
-def get_directions_in_galactic_coords():
+def get_directions_in_galactic_coords(): # Galaxies
 
     gal_lat = np.zeros(len(data))
     gal_lon = np.zeros(len(data))
@@ -90,11 +93,11 @@ def plot_galaxy_directions():
     axs = plt.subplot(111, projection = 'mollweide')
     axs.set_longitude_grid_ends(90)
 
+    plt.fill(countours_auger_sky()[:,1], countours_auger_sky()[:,0], facecolor = 'lightgray', edgecolor = None)
+
     gal_lat, gal_lon, dist_mpc = get_directions_in_galactic_coords()
     s_factor = 1000 
     marker_sizes = s_factor / (dist_mpc ** 2)
-	
-    plt.fill(countours_auger_sky()[:,1], countours_auger_sky()[:,0], facecolor = 'lightgray', edgecolor = None)
     plt.scatter(gal_lon, gal_lat, s = marker_sizes, edgecolors = 'k', linewidths = 0.675, c = 'orangered')
     
     plt.xlabel(r'Galactic longitude, $l \: {\rm [deg]}$', labelpad = 10)
@@ -109,9 +112,39 @@ def plot_galaxy_directions():
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
+def plot_galaxy_directions_wEvents():
+
+    plt.figure()
+    axs = plt.subplot(111, projection = 'mollweide')
+    axs.set_longitude_grid_ends(90)
+
+    plt.fill(countours_auger_sky()[:,1], countours_auger_sky()[:,0], facecolor = 'lightgray', edgecolor = None)
+
+    # Events
+    plt.scatter(ra_dec_to_gal_lon(event_data[:,5], event_data[:,6]), ra_dec_to_gal_lat(event_data[:,5], event_data[:,6]), alpha = 0.05, c = 'gray', marker = '.') # edgecolors = 'none'
+
+    # Starburst galaxies
+    gal_lat, gal_lon, dist_mpc = get_directions_in_galactic_coords()
+    s_factor = 1000 
+    marker_sizes = s_factor / (dist_mpc ** 2)
+    plt.scatter(gal_lon, gal_lat, s = marker_sizes, edgecolors = 'k', linewidths = 0.675, c = 'orangered')
+
+    plt.xlabel(r'Galactic longitude, $l \: {\rm [deg]}$', labelpad = 10)
+    plt.ylabel(r'Galactic latitude, $b \: {\rm [deg]}$')
+    plt.xticks(ticks = [-120 * degree, -60 * degree, 0 * degree, 60 * degree, 120 * degree],
+    labels = [r'$120\degree$', r'$60\degree$', r'$0\degree$', r'$300\degree$', r'$240\degree$'])
+    plt.yticks(ticks = [-60 * degree, -30 * degree, 0 * degree, 30 * degree, 60 * degree], 
+	labels = [r'$-60\degree$', r'$-30\degree$', r'$0\degree$', r'$30\degree$', r'$60\degree$'])
+    plt.grid(linestyle = 'dotted', color = 'black', linewidth = 0.5, zorder = -1.0)
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies_wEvents.pdf', bbox_inches = 'tight')
+    plt.savefig(f'{FIGURES_DIR}/starburst_galaxies_wEvents.png', bbox_inches = 'tight', dpi = 300)
+    plt.show()
+
+# ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    plot_galaxy_directions()
+    # plot_galaxy_directions()
+    plot_galaxy_directions_wEvents()
 
 # ----------------------------------------------------------------------------------------------------
 
