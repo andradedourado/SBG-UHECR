@@ -43,8 +43,8 @@ def compute_photohadronic_timescales(Z):
 def plot_timescales():
 
     data_advection = np.loadtxt(f"{RESULTS_DIR}/timescales_advection.dat") 
-    data_diff_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_diff_1H.dat")
-    data_diff_56Fe = np.loadtxt(f"{RESULTS_DIR}/timescales_diff_56Fe.dat")
+    data_diff_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_MR19_diff_1H.dat")
+    data_diff_56Fe = np.loadtxt(f"{RESULTS_DIR}/timescales_MR19_diff_56Fe.dat")
     data_spal_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_spal_1H.dat")
     data_spal_56Fe = np.loadtxt(f"{RESULTS_DIR}/timescales_spal_56Fe.dat")
     data_photohadronic_1H = compute_photohadronic_timescales(1)
@@ -70,7 +70,7 @@ def plot_timescales():
 def plot_proton_timescales():
 
     data_advection = np.loadtxt(f"{RESULTS_DIR}/timescales_advection.dat") 
-    data_diff_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_diff_1H.dat")
+    data_diff_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_MR19_diff_1H.dat")
     data_spal_1H = np.loadtxt(f"{RESULTS_DIR}/timescales_spal_1H.dat")
     data_photohadronic_1H = compute_photohadronic_timescales(1)
 
@@ -90,6 +90,7 @@ def plot_proton_timescales():
 # ----------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
+    plot_timescales()
     plot_proton_timescales()
 
 # ----------------------------------------------------------------------------------------------------
