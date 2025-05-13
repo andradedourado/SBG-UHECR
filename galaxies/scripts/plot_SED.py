@@ -56,8 +56,8 @@ def plot_SED(galaxy):
     plt.yscale('log')
     plt.xlabel(r'Energy$\: \rm [eV]$')
     plt.ylabel(r'$E^2 F(E) \: \rm [GeV \, cm^{-2} \, s^{-1}]$') 
-    plt.savefig(f"{FIGURES_DIR}/SED_{igal}_{galaxy}.pdf", bbox_inches = 'tight')
-    plt.savefig(f"{FIGURES_DIR}/SED_{igal}_{galaxy}.png", bbox_inches = 'tight', dpi = 300)    
+    plt.savefig(f"{FIGURES_DIR}/SED_{igal:02d}_{galaxy}.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/SED_{igal:02d}_{galaxy}.png", bbox_inches = 'tight', dpi = 300)    
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------

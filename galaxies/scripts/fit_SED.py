@@ -87,7 +87,10 @@ def fit_SED(galaxy, photon_spectrum):
     x_data = x_data[mask]
     y_data = y_data[mask]
 
-    popt, _ = curve_fit(fit_func, x_data, y_data, p0 = p0, bounds = bounds, method = 'dogbox')
+    if galaxy == 'NGC253':
+        popt, _ = curve_fit(fit_func, x_data, y_data, p0 = p0, bounds = bounds)
+    else:
+        popt, _ = curve_fit(fit_func, x_data, y_data, p0 = p0, bounds = bounds, method = 'dogbox')
 
     if photon_spectrum == 'OPT':
         popt = np.append(popt, 0.0)

@@ -120,10 +120,8 @@ def plot_galaxy_directions_wEvents():
 
     plt.fill(countours_auger_sky()[:,1], countours_auger_sky()[:,0], facecolor = 'lightgray', edgecolor = None)
 
-    # Events
     plt.scatter(ra_dec_to_gal_lon(event_data[:,5], event_data[:,6]), ra_dec_to_gal_lat(event_data[:,5], event_data[:,6]), alpha = 0.05, c = 'gray', marker = '.') # edgecolors = 'none'
 
-    # Starburst galaxies
     gal_lat, gal_lon, dist_mpc = get_directions_in_galactic_coords()
     s_factor = 1000 
     marker_sizes = s_factor / (dist_mpc ** 2)
@@ -147,4 +145,3 @@ if __name__ == '__main__':
     plot_galaxy_directions_wEvents()
 
 # ----------------------------------------------------------------------------------------------------
-
