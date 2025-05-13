@@ -20,7 +20,7 @@ def iZ(Z):
 # ----------------------------------------------------------------------------------------------------
 def injection_term(E, Z):
 
-    return E**-2 # Implement the luminosity 
+    return E**-2
 
 # ----------------------------------------------------------------------------------------------------
 def compute_effective_timescale_from_interpolation(E, files, energy_conversion):
@@ -43,19 +43,28 @@ def compute_effective_timescale_from_interpolation(E, files, energy_conversion):
 # ----------------------------------------------------------------------------------------------------
 def escaping_timescales(E, Z):
 
-    files = ["timescales_advection.dat", f"timescales_diff_{PARTICLES[iZ(Z)]}.dat"]
-    energy_conversion = {"timescales_advection.dat": 1.e18, f"timescales_diff_{PARTICLES[iZ(Z)]}.dat": 1.e18}
+    files = ["timescales_advection.dat", f"timescales_MR19_diff_{PARTICLES[iZ(Z)]}.dat"]
+    energy_conversion = {"timescales_advection.dat": 1.e18, f"timescales_MR19_diff_{PARTICLES[iZ(Z)]}.dat": 1.e18}
 
     return compute_effective_timescale_from_interpolation(E, files, energy_conversion)
     
 # ----------------------------------------------------------------------------------------------------
 def energy_loss_timescales(E, Z):
 
-    files = [f"timescales_spal_{PARTICLES[iZ(Z)]}.dat", f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat",
-            f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat", f"timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat"]
-    
-    energy_conversion = {f"timescales_spal_{PARTICLES[iZ(Z)]}.dat": 1.e18, f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat": 1.0, 
-                        f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat": 1.0, f"timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat": 1.0}
+    if Z == 1:
+        files = [f"timescales_spal_{PARTICLES[iZ(Z)]}.dat", f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat",
+                f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat"]
+        
+        energy_conversion = {f"timescales_spal_{PARTICLES[iZ(Z)]}.dat": 1.e18, f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat": 1.0, 
+                            f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat": 1.0}
+
+    else:
+        files = [f"timescales_spal_{PARTICLES[iZ(Z)]}.dat", f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat",
+                f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat", f"timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat"]
+        
+        energy_conversion = {f"timescales_spal_{PARTICLES[iZ(Z)]}.dat": 1.e18, f"timescales_pairproduction_{PARTICLES[iZ(Z)]}.dat": 1.0, 
+                            f"timescales_photopion_{PARTICLES[iZ(Z)]}.dat": 1.0, f"timescales_photodisintegration_{PARTICLES[iZ(Z)]}.dat": 1.0}
+
 
     return compute_effective_timescale_from_interpolation(E, files, energy_conversion)
 
@@ -75,6 +84,11 @@ def cr_escaping_emissivity(E, Z):
     return cr_equilibrium_density(E, Z) / escaping_timescales(E, Z)
 
 # ----------------------------------------------------------------------------------------------------
+def write_cr_equilibrium_density(E, Z):
+    
+    np.savetxt(f"{RESULTS_DIR}/cr_equilibrium_density_{PARTICLES[iZ(Z)]}.dat", np.column_stack((E, cr_equilibrium_density(E, Z))), fmt = "%.15e", delimiter = "\t")
+
+# ----------------------------------------------------------------------------------------------------
 def write_cr_escaping_emissivity(E, Z):
 
     np.savetxt(f"{RESULTS_DIR}/cr_escaping_emissivity_{PARTICLES[iZ(Z)]}.dat", np.column_stack((E, cr_escaping_emissivity(E, Z))), fmt = "%.15e", delimiter = "\t")
@@ -84,6 +98,10 @@ if __name__ == '__main__':
 
     E = np.logspace(16, 21, num = 100)
 
+    write_cr_equilibrium_density(E, 1)
+    write_cr_equilibrium_density(E, 26)
+
+    write_cr_escaping_emissivity(E, 1)
     write_cr_escaping_emissivity(E, 26)
 
 # ----------------------------------------------------------------------------------------------------
