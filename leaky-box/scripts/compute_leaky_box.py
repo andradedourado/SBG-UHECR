@@ -1,3 +1,4 @@
+from scipy.integrate import quad
 from scipy.interpolate import interp1d
 import numpy as np
 
@@ -9,6 +10,8 @@ ZS = [1, 2, 7, 14, 26]
 
 yr_to_s = 60 * 60 * 24 * 365.25
 
+Gmm = 2
+
 # ----------------------------------------------------------------------------------------------------
 def iZ(Z):
 
@@ -18,9 +21,14 @@ def iZ(Z):
         raise ValueError(f"Z ({Z}) not found in ZS.")
 
 # ----------------------------------------------------------------------------------------------------
-def injection_term(E, Z):
+def integrand_injection_term(E):
 
-    return E**-2
+    return E**(-Gmm + 1)
+
+# ----------------------------------------------------------------------------------------------------
+def injection_term(E):
+
+    return E**-Gmm / quad(integrand_injection_term, 1e9, 1e21)[0] 
 
 # ----------------------------------------------------------------------------------------------------
 def compute_effective_timescale_from_interpolation(E, files, energy_conversion):
@@ -76,7 +84,7 @@ def total_timescales(E, Z):
 # ----------------------------------------------------------------------------------------------------
 def cr_equilibrium_density(E, Z):
 
-    return injection_term(E, Z) * total_timescales(E, Z)
+    return injection_term(E) * total_timescales(E, Z)
 
 # ----------------------------------------------------------------------------------------------------
 def cr_escaping_emissivity(E, Z):

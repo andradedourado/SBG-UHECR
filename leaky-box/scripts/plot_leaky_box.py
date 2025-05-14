@@ -1,3 +1,4 @@
+from scipy.integrate import quad
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -14,6 +15,8 @@ RESULTS_DIR = "../results"
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
 ZS = [1, 2, 7, 14, 26]
 
+Gmm = 2
+
 # ----------------------------------------------------------------------------------------------------
 def iZ(Z):
 
@@ -23,9 +26,14 @@ def iZ(Z):
         raise ValueError(f"Z ({Z}) not found in ZS.")
 
 # ----------------------------------------------------------------------------------------------------
-def injection_term(E, Z):
+def integrand_injection_term(E):
 
-    return E**-2
+    return E**(-Gmm + 1)
+
+# ----------------------------------------------------------------------------------------------------
+def injection_term(E):
+
+    return E**-Gmm / quad(integrand_injection_term, 1e9, 1e21)[0] 
 
 # ----------------------------------------------------------------------------------------------------
 def plot_cr_equilibrium_density(Z):
@@ -46,7 +54,7 @@ def plot_cr_escaping_emissivity(Z):
     data = np.loadtxt(f"{RESULTS_DIR}/cr_escaping_emissivity_{PARTICLES[iZ(Z)]}.dat")
 
     plt.plot(np.log10(data[:,0]), data[:,0]**2 * data[:,1], label = 'Escaping')
-    plt.plot(np.log10(data[:,0]), data[:,0]**2 * injection_term(data[:,0], Z), label = 'Injected')
+    plt.plot(np.log10(data[:,0]), data[:,0]**2 * injection_term(data[:,0]), label = 'Injected')
     plt.yscale('log')
     plt.xlabel(r'$\log_{10}(\rm Energy/eV)$')
     plt.ylabel(r'$E^{-2} Q_{\rm esc}(E) \:$[arb. units]')
