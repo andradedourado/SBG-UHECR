@@ -1,3 +1,4 @@
 **/.DS_Store
 **/__pycache__/
 galaxies/data/CombinedSpectrum_ICRC2019.txt
+simulations/results
