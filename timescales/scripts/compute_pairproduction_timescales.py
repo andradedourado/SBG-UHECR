@@ -1,7 +1,7 @@
+import scipy.constants as const
 from scipy.integrate import quad
 from scipy.special import zeta
 import numpy as np
-import scipy.constants as const
 
 RESULTS_DIR = "../results"
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
@@ -79,7 +79,6 @@ def phi(kappa):
 def integrand_interaction_rate(kappa, Gmm):
 
     eps = kappa * const.m_e * const.c**2 / (2 * Gmm)
-
     return photon_density(eps) * phi(kappa) / kappa**2
 
 # ----------------------------------------------------------------------------------------------------

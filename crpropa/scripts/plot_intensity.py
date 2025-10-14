@@ -8,6 +8,7 @@ plt.rcParams.update({'legend.fontsize': 'large',
 'xtick.labelsize': 'x-large',
 'ytick.labelsize': 'x-large'})
 
+FIGURES_DIR = "../figures"
 RESULTS_DIR = "../results"
 
 PARTICLES = ['1H', '4He', '14N', '28Si', '56Fe']
@@ -25,7 +26,7 @@ def iZs(Zs):
 # ----------------------------------------------------------------------------------------------------
 def plot_intensity():
 
-    for Zs in ZSS[1:]:        
+    for Zs in ZSS:        
         data = np.loadtxt(f"{RESULTS_DIR}/spec_{PARTICLES[iZs(Zs)]}.dat")
         plt.plot(np.log10(data[:,0]), data[:,0]**3 * data[:,1], label = f'{PARTICLES_LEGEND[iZs(Zs)]}')
 
@@ -35,6 +36,8 @@ def plot_intensity():
     plt.xlabel(r'$\log_{10}(\rm Energy/eV)$')
     plt.ylabel(r'$E^3 \times \rm Intensity \: [arb. units]$')
     plt.legend()
+    plt.savefig(f"{FIGURES_DIR}/spectrum.pdf", bbox_inches = 'tight')
+    plt.savefig(f"{FIGURES_DIR}/spectrum.png", bbox_inches = 'tight', dpi = 300)
     plt.show()
 
 # ----------------------------------------------------------------------------------------------------
