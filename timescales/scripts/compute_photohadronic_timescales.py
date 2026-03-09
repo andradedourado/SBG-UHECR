@@ -35,7 +35,7 @@ def iZ(Z):
 def execute_get_cross_section_TENDL2023(A, Z):
 
     output = subprocess.run(
-        ['python3', f"{XSECTIONS_DIR}/get_cross_section_TENDL-2023.py", str(A), str(Z)],
+        ['python3', f"{XSECTIONS_DIR}/get_cross_section_TENDL-2025.py", str(A), str(Z)],
         capture_output = True,
         text = True
     )

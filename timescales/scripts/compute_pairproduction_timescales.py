@@ -1,4 +1,4 @@
-import scipy.constants as const
+import scipy.constants as const # SI
 from scipy.integrate import quad
 from scipy.special import zeta
 import numpy as np

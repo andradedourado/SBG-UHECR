@@ -23,7 +23,7 @@ def cross_section(A, Z):
         print(f'Element with atomic number {Z} not found.')
         return np.array([]), np.array([])
 
-    url = f'https://tendl.web.psi.ch/tendl_2023/gamma_file/{element}/{element}{A:03}/tables/xs/nonelastic.tot'
+    url = f'https://tendl.imperial.ac.uk/tendl_2025/gamma_files/{element}/{element}{A:03}/tables/xs/nonelastic.tot' # https://tendl.web.psi.ch/tendl_2023/gamma_file/{element}/{element}{A:03}/tables/xs/nonelastic.tot
 
     response = requests.get(url)
 
